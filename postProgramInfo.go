@@ -28,7 +28,6 @@ var (
         "D187": "Navi10 XM",
         "D188": "Navi10 Pro-XL",
         "D189": "Navi10 XLE",
-
     }
 
     asicConf = make([]AsicConf, 10)
@@ -41,6 +40,19 @@ func writeJsonFile( data []AsicConf) {
     _ = ioutil.WriteFile("test.json", file, 0644)
 
     fmt.Println("Called write Json File")
+}
+
+func calcStackName(vbios string) (string) {
+
+    var stackName = ""
+
+    exp := `D18(\d)`
+    r := regexp.MustCompile( exp )
+    if found := r.FindAllString( vbios, 1); found != nil {
+        stackName = found[0] + "01W19" + "46" + "LN5" 
+    }
+
+    return stackName
 }
 
 func calcVBIOS(vbios string) (string) {
@@ -93,12 +105,14 @@ func calcOSDB(vbios string, osdbSlice []string) (string) {
 
     var osdbName = ""
 
+    fmt.Println("Print OSDB slice - ", osdbSlice)
+
     if targetRelease := calcTargetRelease( vbios ); targetRelease != "" {
         for  _, osdb := range osdbSlice {
             exp := targetRelease + `-(\d)*`
             r := regexp.MustCompile( exp )
             if found := r.FindAllString( osdb, 1); found != nil {
-                osdbName = found[0] 
+                osdbName = found[0]
             }
         }
     }
@@ -112,10 +126,12 @@ func PostAsicConf() {
     vbiosSlice := GetVBIOS()
     osdbSlice := GetOSDB()
     fmt.Println("VBIOS list: ", len(vbiosSlice), vbiosSlice)
+    fmt.Println("VBIOS list: xxxx ", len(osdbSlice), osdbSlice)
 
     i := 0
     for _, raw := range vbiosSlice{
         if raw != "" {
+            asicConf[i].StackName = calcStackName( raw )
             asicConf[i].VBIOS = calcVBIOS( raw )
             asicConf[i].OSDB = calcOSDB( raw, osdbSlice )//"amdgpu-pro-19.40"
             asicConf[i].AsicName = calcAsicName ( raw ) //"D18x"
