@@ -1,4 +1,4 @@
-package smt_auto
+package smtauto
 
 import (
     "fmt"
