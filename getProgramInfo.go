@@ -8,7 +8,7 @@ import (
 
 func Test(x string) (y string) {
 
-    fmt.Println("Y is -- ", y)
+    fmt.Println("X is -- ", x)
 
-    return  y
+    return  x
 }
