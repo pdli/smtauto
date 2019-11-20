@@ -15,6 +15,13 @@ type AsicConf struct {
     OSDB string
 }
 
+type StackConf struct {
+    Version string
+    StackPath string
+    TestReport string
+    LnxStack []AsicConf
+}
+
 var (
     targetReleaseMap = map[string]string {
         "D182": "19.40",
@@ -31,15 +38,20 @@ var (
     }
 
     asicConf = make([]AsicConf, 10)
+
+    stackConf = StackConf{
+        Version: "WW46",
+        StackPath: "/opt/shares/Navi10_Stack/",
+    }
 )
 
-func writeJsonFile( data []AsicConf) {
+func writeJsonFile( data StackConf ) {
 
     file, _ := json.MarshalIndent( data, "", "    ")
 
     _ = ioutil.WriteFile("test.json", file, 0644)
 
-    fmt.Println("Called write Json File")
+    fmt.Println("Called write Json File ")
 }
 
 func calcStackName(vbios string) (string) {
@@ -125,8 +137,6 @@ func PostAsicConf() {
 
     vbiosSlice := GetVBIOS()
     osdbSlice := GetOSDB()
-    fmt.Println("VBIOS list: ", len(vbiosSlice), vbiosSlice)
-    fmt.Println("VBIOS list: xxxx ", len(osdbSlice), osdbSlice)
 
     i := 0
     for _, raw := range vbiosSlice{
@@ -142,5 +152,8 @@ func PostAsicConf() {
 
     fmt.Println("ASIC conf ==> ", asicConf)
 
-    writeJsonFile( asicConf )
+    stackConf.TestReport = GetTestReport()
+    stackConf.LnxStack = asicConf
+
+    writeJsonFile( stackConf )
 }
