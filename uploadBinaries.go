@@ -37,13 +37,7 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
     }
     versionQuery.SendKeys("D1880201_101")
 
-    querySmtBtn, err := wd.FindElement(webdriver.ByXPATH, "//button[@type='submit']")
-    if err != nil {
-        log.Fatal( err )
-    }
-    querySmtBtn.Click()
-
-    searchMatIcon, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'search')]")
+    searchMatIcon, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-form-field-suffix ng-tns-c11-3 ng-star-inserted']/*[contains(text(), 'search')]")
     if err != nil {
         log.Fatal( err )
     }
