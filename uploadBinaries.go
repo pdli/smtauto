@@ -17,7 +17,7 @@ func uploadBtnLoaded(wd webdriver.WebDriver)(bool, error){
     return true, err
 }
 
-func binaryNotExisted(wd webdriver.WebDriver)(bool) {
+func binNotExisted(wd webdriver.WebDriver, binVersion string)(bool) {
 
     notFound := true
 
@@ -25,7 +25,7 @@ func binaryNotExisted(wd webdriver.WebDriver)(bool) {
     if err != nil {
         log.Fatal( err )
     }
-    versionQuery.SendKeys("D1880201_101")
+    versionQuery.SendKeys( binVersion )
 
     searchMatIcon, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-form-field-suffix ng-tns-c11-3 ng-star-inserted']/*[contains(text(), 'search')]")
     if err != nil {
@@ -33,21 +33,39 @@ func binaryNotExisted(wd webdriver.WebDriver)(bool) {
     }
     searchMatIcon.Click()
 
-    _, err = wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted']/*[contains(text(), 'D1880201_101')]")
+    _, err = wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted']/*[contains(text(), '" + binVersion + "')]")
     if err != nil {
-        log.Fatal( err )
+        log.Println( "Not found binary ==> ", binVersion )
     }else {
         log.Println("Catch up you")
         notFound = false
     }
 
+    wd.Refresh()
+
     return notFound
 }
 
-func getNewBinToUpload(wd webdriver.WebDriver) (){
-    
+func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
+
     log.Println(stackConf.LnxStack)
 
+    binSlice := make([]string, len(stackConf.LnxStack))
+
+    count :=0
+    for  index,_ := range stackConf.LnxStack {
+
+        if notFound := binNotExisted(wd, stackConf.LnxStack[ index].VBIOS); notFound == true {
+            binSlice[count] = stackConf.LnxStack[index].VBIOS
+            count ++
+        }
+    }
+
+    binSlice = append(binSlice[:count])
+
+    log.Println(binSlice)
+
+    return binSlice
 //    return stackConf.AsicConf
 }
 
@@ -65,12 +83,6 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
     }
     uploadBtn.Click()
 
-    if notFound := binaryNotExisted(wd); notFound == true {
-
-        log.Println("Not found Element")
-    } else {
-        log.Println("Found Element")
-    }
 
     getNewBinToUpload(wd)
 
