@@ -16,20 +16,27 @@ func writeJsonFile( data StackConf ) {
     fmt.Println("Called write Json File ")
 }
 
-func calcStackName(vbios string) (string) {
+func calcSmtStackName(vbios string) (string) {
 
     var stackName = ""
 
-    exp := `D18(\d)`
+    var ver = "46"
+    exp := `(\d){2}`
     r := regexp.MustCompile( exp )
+    if found := r.FindAllString( stackConf.Version, 1); found !=nil {
+        ver = found[0]
+    }
+
+    exp = `D18(\d)`
+    r = regexp.MustCompile( exp )
     if found := r.FindAllString( vbios, 1); found != nil {
-        stackName = found[0] + "01W19" + "46" + "LN5" 
+        stackName = found[0] + "01W19" + ver  + "LN5" 
     }
 
     return stackName
 }
 
-func calcVBIOS(vbios string) (string) {
+func calcVbiosVersion(vbios string) (string) {
 
     var vbiosName = ""
 
@@ -75,7 +82,7 @@ func calcTargetRelease(vbios string) (string) {
 }
 
 
-func calcOSDB(vbios string, osdbSlice []string) (string) {
+func calcOsdbVersion(vbios string, osdbSlice []string) (string) {
 
     var osdbName = ""
 
@@ -105,9 +112,9 @@ func PostAsicConf() {
     i := 0
     for _, raw := range vbiosSlice{
         if raw != "" {
-            asicConf[i].StackName = calcStackName( raw )
-            asicConf[i].VBIOS = calcVBIOS( raw )
-            asicConf[i].OSDB = calcOSDB( raw, osdbSlice )//"amdgpu-pro-19.40"
+            asicConf[i].StackName = calcSmtStackName( raw )
+            asicConf[i].VBIOS = calcVbiosVersion( raw )
+            asicConf[i].OSDB = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
             asicConf[i].AsicName = calcAsicName ( raw ) //"D18x"
             asicConf[i].TargetRelease = calcTargetRelease( raw ) //"19.40"
             i ++

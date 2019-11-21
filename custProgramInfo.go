@@ -37,7 +37,7 @@ var (
     }
 
     stackConf = StackConf{
-        Version: "WW46",
+        Version: "WW47",
         StackPath: "/opt/shares/Navi10_Stack/",
     }
 )
