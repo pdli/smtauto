@@ -37,7 +37,6 @@ var (
         "D189": "Navi10 XLE",
     }
 
-    asicConf = make([]AsicConf, 10)
 
     stackConf = StackConf{
         Version: "WW46",
@@ -137,6 +136,8 @@ func PostAsicConf() {
 
     vbiosSlice := GetVBIOS()
     osdbSlice := GetOSDB()
+
+    asicConf := make([]AsicConf, len(vbiosSlice))
 
     i := 0
     for _, raw := range vbiosSlice{

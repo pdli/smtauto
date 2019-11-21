@@ -42,13 +42,16 @@ func GetVBIOS() ([]string){
         log.Fatal( err )
     }
 
-    for index, f := range filesName {
+    count := 0
+    for _, f := range filesName {
         if found := r.FindAllString( f, -1 ); found != nil {
-          vbiosSlice[index] =  f
-          fmt.Println("Get VBIOS ==> ", index, vbiosSlice[index])
+          vbiosSlice[count] =  f
+          count ++
+          fmt.Println("Get VBIOS ==> ", count, vbiosSlice[count])
         }
     }
 
+    vbiosSlice = append( vbiosSlice[:count])
     return vbiosSlice
 }
 
@@ -60,13 +63,16 @@ func GetOSDB() ([]string){
     exp := `^amdgpu-pro-19.(\d)0-(.)*-ubuntu-18.04.tar.xz`
     r := regexp.MustCompile( exp )
 
-    for index, f := range filesName {
+    count := 0
+    for _, f := range filesName {
         if found := r.FindAllString( f, -1); found != nil {
-            osdbSlice[ index ] = f
-            fmt.Println("Get OSDB ==> ", index, osdbSlice[index])
+            osdbSlice[ count ] = f
+            count ++
+            fmt.Println("Get OSDB ==> ", count, osdbSlice[count])
         }
     }
 
+    osdbSlice = append( osdbSlice[ :count])
     return osdbSlice
 }
 
