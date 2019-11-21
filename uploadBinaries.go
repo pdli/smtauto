@@ -50,13 +50,25 @@ func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
 
     log.Println(stackConf.LnxStack)
 
-    binSlice := make([]string, len(stackConf.LnxStack))
+    binSlice := make([]string, 2*len(stackConf.LnxStack))
 
     count :=0
+
+    //Get new VBIOS
     for  index,_ := range stackConf.LnxStack {
 
         if notFound := binNotExisted(wd, stackConf.LnxStack[ index].VBIOS); notFound == true {
             binSlice[count] = stackConf.LnxStack[index].VBIOS
+            count ++
+        }
+    }
+
+
+    //get new OSDB
+    for index, _ := range stackConf.LnxStack {
+
+        if notFound := binNotExisted(wd, stackConf.LnxStack[index].OSDB); notFound == true {
+            binSlice[count] = stackConf.LnxStack[index].OSDB
             count ++
         }
     }
