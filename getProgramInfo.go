@@ -15,9 +15,9 @@ func Test(x string) (string) {
     return  x
 }
 
-func readDir() ([]string) {
+func readNavi10StackDir() ([]string) {
 
-    filesName, err := ioutil.ReadDir("/opt/shares/Navi10_Stack/WW46")
+    filesName, err := ioutil.ReadDir( stackConf.StackPath + "/" + stackConf.Version)
     if err != nil {
         log.Fatal(err)
     }
@@ -33,7 +33,7 @@ func readDir() ([]string) {
 
 func GetVBIOS() ([]string){
 
-    filesName :=  readDir()
+    filesName :=  readNavi10StackDir()
     vbiosSlice := make([]string, len(filesName))
 
     exp := `D18(\d){3}01[_|.]`
@@ -57,7 +57,7 @@ func GetVBIOS() ([]string){
 
 func GetOSDB() ([]string){
 
-    filesName := readDir()
+    filesName := readNavi10StackDir()
     osdbSlice := make([]string, len(filesName))
 
     exp := `^amdgpu-pro-19.(\d)0-(.)*-ubuntu-18.04.tar.xz`
@@ -78,7 +78,7 @@ func GetOSDB() ([]string){
 
 func GetTestReport() (string) {
 
-    filesName := readDir()
+    filesName := readNavi10StackDir()
     testReport := ""
 
     exp := `Navi10 Linux SW Stack Test Report (.)*.msg`
