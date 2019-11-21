@@ -50,9 +50,9 @@ func mainPageLoaded(wd webdriver.WebDriver) (bool, error){
     return true, nil
 }
 
-func LogonSMT( smtUrl string) (){
+func LogonSMT( smtUrl string) (wd webdriver.WebDriver){
 
-    wd := newChromeDriver()
+    wd = newChromeDriver()
 
     if err := wd.Get( smtUrl ); err != nil {
         log.Fatal( err )
@@ -62,5 +62,8 @@ func LogonSMT( smtUrl string) (){
         log.Fatal( err )
     } else {
         log.Println("Log in successfully")
-    } 
+    }
+
+    return wd
 }
+
