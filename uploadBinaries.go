@@ -260,7 +260,7 @@ func UploadBinaries(wd webdriver.WebDriver) {
 
     for index,_ := range stackConf.LnxStack {
         uploadBIOS(wd, stackConf.LnxStack[index])
-        time.Sleep( 5 * time.Second )
+        time.Sleep( 10 * time.Second )
     }
 
     for index,_ := range stackConf.LnxStack {
