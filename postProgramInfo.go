@@ -101,6 +101,20 @@ func calcOsdbVersion(vbios string, osdbSlice []string) (string) {
     return osdbName
 }
 
+func calcOsdbID(vbios string, osdbSlice []string) (string){
+
+    var osdbID = ""
+
+    osdbName := calcOsdbName( vbios, osdbSlice )
+
+    exp := `(\d)*$`
+    r := regexp.MustCompile( exp )
+    if found := r.FindAllString( osdb, 1); found != nil {
+        osdbID = found[0]
+    }
+
+    return osdbID
+}
 
 func PostAsicConf() {
 
@@ -116,7 +130,7 @@ func PostAsicConf() {
             asicConf[i].VbiosVersion = calcVbiosVersion( raw )
             asicConf[i].VbiosFileName = raw
             asicConf[i].OsdbVersion = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
-            asicConf[i].OsdbID = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
+            asicConf[i].OsdbID = calcOsdbID( raw, osdbSlice )//"amdgpu-pro-19.40"
             asicConf[i].AsicName = calcAsicName ( raw ) //"D18x"
             asicConf[i].TargetRelease = calcTargetRelease( raw ) //"19.40"
             i ++
