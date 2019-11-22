@@ -42,7 +42,7 @@ func newChromeDriver() (webdriver.WebDriver ) {
 
 func mainPageLoaded(wd webdriver.WebDriver) (bool, error){
 
-    _, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'VIEW STACKS')]")
+    _, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'ACTIVE PROGRAMS LIST')]")
     if err != nil{
         return false, err
     }
