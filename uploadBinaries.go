@@ -97,6 +97,77 @@ func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
 //    return stackConf.AsicConf
 }
 
+func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
+
+    log.Println("==> Conf of the ASIC to upload OSDB, ", asicConf)
+
+    if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
+        log.Fatal( err )
+    }
+
+    osdbRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-2")
+    if err != nil {
+        log.Fatal( err )
+    }
+    osdbRadioBtn.Click()
+
+    swNameInput, err := wd.FindElement(webdriver.ByID, "sw")
+    if err != nil {
+        log.Fatal( err )
+    }
+    swNameInput.Clear()
+    swNameInput.SendKeys("AMD GPU DRIVER")
+
+    swListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-0']//span[contains(text(), 'AMD GPU DRIVER')]")
+    if err != nil {
+        log.Fatal( err )
+    }
+    swListBox.Click()
+
+    fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
+    if err != nil {
+        log.Fatal( err )
+    }
+    fileUploadTab.Click()
+
+    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-4']/div/div/div/input")
+    if err != nil {
+        log.Fatal( err )
+    }
+    fileInput.Clear()
+    fileInput.SendKeys("/opt/shares/Navi10_Stack/WW47/" + asicConf.OsdbFileName )
+
+    versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
+    if err != nil {
+        log.Fatal( err )
+    }
+    versionInput.Clear()
+    versionInput.SendKeys( asicConf.VbiosVersion )
+
+    osInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='os']")
+    if err != nil {
+        log.Fatal( err )
+    }
+    osInput.Clear()
+    osInput.SendKeys("Linux Ubuntu 18.04 LTS")
+
+    osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 18.04')]")
+    if err != nil {
+        log.Fatal( err )
+    }
+    osListBox.Click()
+
+    uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@class='submit-button mat-raised-button']")
+    if err != nil {
+        log.Fatal( err )
+    }
+    uploadBtn.Click()
+
+    //Refresh webpage
+    wd.Refresh()
+
+}
+
 func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 
     log.Println("==> Conf of the ASIC, ", asicConf)
@@ -189,6 +260,8 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
             TargetRelease: "19.50",
             VbiosVersion: "D1880201_102",
             VbiosFileName: "D1880201.102",
+            OsdbVersion: "19.40-948413",
+            OsdbFileName: "amdgpu-pro-19.40-948413-ubuntu-18.04.tar.xz",
         },
         {
             AsicName: "Navi10 XLE",
@@ -197,14 +270,15 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
             VbiosVersion: "D1890101_066",
             VbiosFileName: "D1890101.066",
             OsdbVersion: "19.50-949708",
+            OsdbFileName: "amdgpu-pro-19.50-949708-ubuntu-18.04.tar.xz",
         },
     } // getNewBinToUpload(wd)
 
     for index,_ := range lnxStack {
-        uploadBIOS(wd, lnxStack[index])
+        //uploadBIOS(wd, lnxStack[index])
+        uploadOSDB(wd, lnxStack[index])
     }
 
-    uploadOSDB(wd, lnxStack[0])
 
     return wd
 
