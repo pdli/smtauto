@@ -13,7 +13,7 @@ type AsicConf struct {
     VbiosVersion string
     VbiosFileName string
     OsdbVersion string
-    OsdbFileName string
+    OsdbID string
 }
 
 type StackConf struct {

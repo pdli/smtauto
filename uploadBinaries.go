@@ -105,6 +105,9 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
         log.Fatal( err )
     }
 
+    //refresh webpage for loop
+    wd.Refresh()
+
     osdbRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-2")
     if err != nil {
         log.Fatal( err )
@@ -124,25 +127,25 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
     }
     swListBox.Click()
 
-    fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
+    httpLinkInput, err := wd.FindElement(webdriver.ByID, "link")
     if err != nil {
         log.Fatal( err )
     }
-    fileUploadTab.Click()
-
-    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-4']/div/div/div/input")
-    if err != nil {
-        log.Fatal( err )
-    }
-    fileInput.Clear()
-    fileInput.SendKeys("/opt/shares/Navi10_Stack/WW47/" + asicConf.OsdbFileName )
+    httpLinkInput.Clear()
+    //http://lnx-jfrog/artifactory/osibuild-packages-cache/949708/hybrid_rel.u1804_64/amdgpu-pro-19.50-949708-ubuntu-18.04.tar.xz
+    ubuntuLink := "http://lnx-jfrog/artifactory/osibuild-packages-cache/" +
+                  asicConf.OsdbID +
+                  "/hybrid_rel.u1804_64/amdgpu-pro-" +
+                  asicConf.OsdbVersion +
+                  "-ubuntu-18.04.tar.xz"
+    httpLinkInput.SendKeys( ubuntuLink )
 
     versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
     if err != nil {
         log.Fatal( err )
     }
     versionInput.Clear()
-    versionInput.SendKeys( asicConf.VbiosVersion )
+    versionInput.SendKeys( asicConf.OsdbVersion )
 
     osInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='os']")
     if err != nil {
@@ -162,9 +165,6 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
         log.Fatal( err )
     }
     uploadBtn.Click()
-
-    //Refresh webpage
-    wd.Refresh()
 
 }
 
@@ -238,7 +238,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
     wd.Refresh()
 }
 
-func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
+func UploadBinaries(wd webdriver.WebDriver) {
 
     if err := wd.WaitWithTimeout(uploadBtnLoaded, 10 * time.Second); err != nil {
         log.Fatal( err )
@@ -252,34 +252,23 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
     }
     uploadBtn.Click()
 
+    // getNewBinToUpload(wd)
 
-    lnxStack := []AsicConf {
-        {
-            AsicName: "Navi10 Pro-XL",
-            StackName: "D18801W1947LN5",
-            TargetRelease: "19.50",
-            VbiosVersion: "D1880201_102",
-            VbiosFileName: "D1880201.102",
-            OsdbVersion: "19.40-948413",
-            OsdbFileName: "amdgpu-pro-19.40-948413-ubuntu-18.04.tar.xz",
-        },
-        {
-            AsicName: "Navi10 XLE",
-            StackName: "D18901W1947LN5",
-            TargetRelease: "19.50",
-            VbiosVersion: "D1890101_066",
-            VbiosFileName: "D1890101.066",
-            OsdbVersion: "19.50-949708",
-            OsdbFileName: "amdgpu-pro-19.50-949708-ubuntu-18.04.tar.xz",
-        },
-    } // getNewBinToUpload(wd)
+    log.Println("Binaries to be upload ==> ", stackConf.LnxStack)
 
-    for index,_ := range lnxStack {
-        //uploadBIOS(wd, lnxStack[index])
-        uploadOSDB(wd, lnxStack[index])
+    for index,_ := range stackConf.LnxStack {
+        uploadBIOS(wd, stackConf.LnxStack[index])
+        time.Sleep( 5 * time.Second )
     }
 
+    for index,_ := range stackConf.LnxStack {
+        uploadOSDB(wd, stackConf.LnxStack[index])
+        time.Sleep(20 * time.Second )
+    }
 
-    return wd
+    unUploadSlice := getNewBinToUpload(wd)
+    if len(unUploadSlice)>0 {
+        log.Fatal("There are still binaries not uplaoded == ", unUploadSlice)
+    }
 
 }
