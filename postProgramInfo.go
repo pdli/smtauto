@@ -113,8 +113,10 @@ func PostAsicConf() {
     for _, raw := range vbiosSlice{
         if raw != "" {
             asicConf[i].StackName = calcSmtStackName( raw )
-            asicConf[i].VBIOS = calcVbiosVersion( raw )
-            asicConf[i].OSDB = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
+            asicConf[i].VbiosVersion = calcVbiosVersion( raw )
+            asicConf[i].VbiosFileName = raw
+            asicConf[i].OsdbVersion = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
+            asicConf[i].OsdbFileName = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
             asicConf[i].AsicName = calcAsicName ( raw ) //"D18x"
             asicConf[i].TargetRelease = calcTargetRelease( raw ) //"19.40"
             i ++

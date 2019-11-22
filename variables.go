@@ -10,8 +10,10 @@ type AsicConf struct {
     AsicName string
     StackName string
     TargetRelease string
-    VBIOS string
-    OSDB string
+    VbiosVersion string
+    VbiosFileName string
+    OsdbVersion string
+    OsdbFileName string
 }
 
 type StackConf struct {

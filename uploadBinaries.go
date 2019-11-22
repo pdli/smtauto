@@ -69,8 +69,8 @@ func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
     //Get new VBIOS
     for  index,_ := range stackConf.LnxStack {
 
-        if notFound := binNotExisted(wd, stackConf.LnxStack[ index].VBIOS); notFound == true {
-            binSlice[count] = stackConf.LnxStack[index].VBIOS
+        if notFound := binNotExisted(wd, stackConf.LnxStack[ index].VbiosVersion); notFound == true {
+            binSlice[count] = stackConf.LnxStack[index].VbiosVersion
             count ++
         }
     }
@@ -79,8 +79,8 @@ func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
     //get new OSDB
     for index, _ := range stackConf.LnxStack {
 
-        if notFound := binNotExisted(wd, stackConf.LnxStack[index].OSDB); notFound == true {
-            binSlice[count] = stackConf.LnxStack[index].OSDB
+        if notFound := binNotExisted(wd, stackConf.LnxStack[index].OsdbVersion); notFound == true {
+            binSlice[count] = stackConf.LnxStack[index].OsdbVersion
             count ++
         }
     }
@@ -96,15 +96,16 @@ func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
 //    return stackConf.AsicConf
 }
 
-func uploadBIOS(wd webdriver.WebDriver, vbiosSlice []string) {
+func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 
-    log.Println("==> New VBIOS Lisst, \n", vbiosSlice)
+    log.Println("==> Conf of the ASIC, ", asicConf)
 
     if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
         log.Fatal( err )
     }
+    time.Sleep(5 * time.Second)
 
-    biosRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-3-input")
+    biosRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-3")
     if err != nil {
         log.Fatal( err )
     }
@@ -122,7 +123,7 @@ func uploadBIOS(wd webdriver.WebDriver, vbiosSlice []string) {
     }
     fileUploadTab.Click()
 
-    clickHereBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'CLICKE HERE TO SELECT A FILE')]")
+    clickHereBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-3']/div/div/div/button")
     if err != nil {
         log.Fatal( err )
     }
@@ -132,13 +133,13 @@ func uploadBIOS(wd webdriver.WebDriver, vbiosSlice []string) {
     if err != nil {
         log.Fatal( err )
     }
-    fileInput.SendKeys("/opt/shares/Navi10_Stack/WW47/D1880201.102")
+    fileInput.SendKeys("/opt/shares/Navi10_Stack/WW47/" + asicConf.VbiosFileName )
 
     versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
     if err != nil {
         log.Fatal( err )
     }
-    versionInput.SendKeys("D1880201_102")
+    versionInput.SendKeys( asicConf.VbiosVersion )
 
     osInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='os']")
     if err != nil {
@@ -146,12 +147,19 @@ func uploadBIOS(wd webdriver.WebDriver, vbiosSlice []string) {
     }
     osInput.SendKeys("Linux Ubuntu 18.04 LTS")
 
-    uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'UPLOAD')]")
+    ////*[@id="mat-option-17"]/span
+    osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 18.04')]")
     if err != nil {
         log.Fatal( err )
     }
-    uploadBtn.Clear()
-    //uploadBtn.Click()
+    osListBox.Click()
+
+    ////*[@id="mat-tab-content-0-0"]/div/app-binary-form/div/div[5]/button/span
+    uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@class='submit-button mat-raised-button']")
+    if err != nil {
+        log.Fatal( err )
+    }
+    uploadBtn.Click()
 
 }
 
@@ -170,14 +178,27 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
     uploadBtn.Click()
 
 
-    binSlice := []string{
-        "D1880201_102",
-        "D1890101_066",
-        "19.50-949708",
-        "19.40-948413",
+    lnxStack := []AsicConf {
+        {
+            AsicName: "Navi10 Pro-XL",
+            StackName: "D18801W1947LN5",
+            TargetRelease: "19.50",
+            VbiosVersion: "D1880201_102",
+            VbiosFileName: "D1880201.102",
+        },
+        {
+            AsicName: "Navi10 XLE",
+            StackName: "D18901W1947LN5",
+            TargetRelease: "19.50",
+            VbiosVersion: "D1890101_066",
+            VbiosFileName: "D1890101.066",
+            OsdbVersion: "19.50-949708",
+        },
     } // getNewBinToUpload(wd)
 
-    uploadBIOS(wd, binSlice[:2])
+    for index,_ := range lnxStack {
+        uploadBIOS(wd, lnxStack[index])
+    }
 
     //uploadOSDB(wd, binSlice[2:])
 
