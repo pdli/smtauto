@@ -21,6 +21,10 @@ func binNotExisted(wd webdriver.WebDriver, binVersion string)(bool) {
 
     notFound := true
 
+    if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
+        log.Fatal( err )
+    }
+
     versionQuery, err := wd.FindElement(webdriver.ByID, "mat-input-1")
     if err != nil {
         log.Fatal( err )
@@ -119,7 +123,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
         log.Fatal( err )
     }
     swNameInput.Clear()
-    swNameInput.SendKeys("AMD GPU DRIVER")
+    swNameInput.SendKeys("AMD GPU DRIVE")
 
     swListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-0']//span[contains(text(), 'AMD GPU DRIVER')]")
     if err != nil {
@@ -206,7 +210,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
         log.Fatal( err )
     }
     fileInput.Clear()
-    fileInput.SendKeys("/opt/shares/Navi10_Stack/WW47/" + asicConf.VbiosFileName )
+    fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" + asicConf.VbiosFileName )
 
     versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
     if err != nil {
@@ -251,8 +255,6 @@ func UploadBinaries(wd webdriver.WebDriver) {
         log.Fatal( err )
     }
     uploadBtn.Click()
-
-    // getNewBinToUpload(wd)
 
     log.Println("Binaries to be upload ==> ", stackConf.LnxStack)
 
