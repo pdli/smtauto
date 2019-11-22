@@ -25,6 +25,7 @@ func binNotExisted(wd webdriver.WebDriver, binVersion string)(bool) {
     if err != nil {
         log.Fatal( err )
     }
+    versionQuery.Clear()
     versionQuery.SendKeys( binVersion )
 
     searchMatIcon, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-form-field-suffix ng-tns-c11-3 ng-star-inserted']/*[contains(text(), 'search')]")
@@ -103,7 +104,6 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
     if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
         log.Fatal( err )
     }
-    time.Sleep(5 * time.Second)
 
     biosRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-3")
     if err != nil {
@@ -115,6 +115,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
     if err != nil {
         log.Fatal( err )
     }
+    programInput.Clear()
     programInput.SendKeys("Navi 10")
 
     fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
@@ -123,44 +124,47 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
     }
     fileUploadTab.Click()
 
-    clickHereBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-3']/div/div/div/button")
-    if err != nil {
-        log.Fatal( err )
-    }
-    clickHereBtn.Click()
+//    clickHereBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-3']/div/div/div/button")
+//    if err != nil {
+//        log.Fatal( err )
+//    }
+//    clickHereBtn.Click()
 
     fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-3']/div/div/div/input")
     if err != nil {
         log.Fatal( err )
     }
+    fileInput.Clear()
     fileInput.SendKeys("/opt/shares/Navi10_Stack/WW47/" + asicConf.VbiosFileName )
 
     versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
     if err != nil {
         log.Fatal( err )
     }
+    versionInput.Clear()
     versionInput.SendKeys( asicConf.VbiosVersion )
 
     osInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='os']")
     if err != nil {
         log.Fatal( err )
     }
+    osInput.Clear()
     osInput.SendKeys("Linux Ubuntu 18.04 LTS")
 
-    ////*[@id="mat-option-17"]/span
     osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 18.04')]")
     if err != nil {
         log.Fatal( err )
     }
     osListBox.Click()
 
-    ////*[@id="mat-tab-content-0-0"]/div/app-binary-form/div/div[5]/button/span
     uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@class='submit-button mat-raised-button']")
     if err != nil {
         log.Fatal( err )
     }
     uploadBtn.Click()
 
+    //Refresh webpage
+    wd.Refresh()
 }
 
 func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
@@ -200,7 +204,7 @@ func UploadBinaries(wd webdriver.WebDriver)( webdriver.WebDriver ){
         uploadBIOS(wd, lnxStack[index])
     }
 
-    //uploadOSDB(wd, binSlice[2:])
+    uploadOSDB(wd, lnxStack[0])
 
     return wd
 
