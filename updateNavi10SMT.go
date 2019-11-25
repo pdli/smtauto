@@ -9,8 +9,8 @@ import(
 
 func stackLoaded(wd webdriver.WebDriver) (bool, error) {
 
-    //NV10-D18801W1947LN5
-    _, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='info-holder']/*[contains(text(), 'NV10-D18801W1947LN5')]")
+    //NV10-D18601W1944WN3
+    _, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='info-holder']/*[contains(text(), 'NV10-D18601W1944WN3')]")
     if err != nil {
         return false, err
     }
@@ -26,9 +26,20 @@ func binaryLinked(wd webdriver.WebDriver) (bool, error) {
     }
 
     return true, nil
+
+  }
+
+func vbiosUpdated(wd webdriver.WebDriver)(bool, error){
+
+    _, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Status: Uploaded')]")
+    if err != nil {
+        return false, err
+    }
+
+    return true, nil
 }
 
-func uploadVbiosBinary(wd webdriver.WebDriver) {
+func uploadVbiosBinary(wd webdriver.WebDriver) (error){
 
     //click Binaries
     binTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Binaries')]")
@@ -39,6 +50,13 @@ func uploadVbiosBinary(wd webdriver.WebDriver) {
 
     time.Sleep( 5 * time.Second)
 
+    //check if updated
+    if err = wd.WaitWithTimeout(vbiosUpdated, 10 * time.Second); err == nil {
+        log.Println("VBIOS has already been updated - " + "BIOS____XXXX")
+        return nil
+    }
+
+    //*****update vbios since it is not updated
     //select Action
     selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Select Action')]")
     if err != nil {
@@ -84,6 +102,8 @@ func uploadVbiosBinary(wd webdriver.WebDriver) {
     } else {
         log.Println("Binary linked successful")
     }
+
+    return nil
 }
 
 func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
@@ -96,7 +116,7 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
 
     time.Sleep( 5 * time.Second ) //wait for stacks page loading
 
-    lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), 'D18801W1947LN5')]")
+    lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), 'D18601W1944WN3')]")
     if err != nil {
         log.Fatal( err )
     }
@@ -109,6 +129,59 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
 
 }
 
+func testReportUploaded(wd webdriver.WebDriver)(bool, error) {
+
+    _, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'UPLOAD NEW REPORT')]")
+    if err != nil {
+        return false, err
+    }
+
+    return true, nil
+}
+
+func uploadTestReport(wd webdriver.WebDriver)(error) {
+
+    //goto Test Reports tab
+    testReportTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Test Reports')]")
+    if err != nil {
+        log.Fatal( err )
+    }
+    testReportTab.Click()
+
+    //check test report uploaded or not
+    if err = wd.WaitWithTimeout(testReportUploaded, 10 * time.Second); err == nil {
+        log.Println("Test Report has alreayd been uploaded yet ..., SKIP" )
+        return err
+    }
+
+    //add report click
+    addReportBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'ADD REPORT')]")
+    if err != nil {
+        log.Fatal( err )
+    }
+    addReportBtn.Click()
+
+    //select file
+    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-dialog-0']//input[@type='file']")
+    if err != nil {
+      log.Fatal( err )
+    }
+    fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.TestReport + "/" + stackConf.TestReport)
+
+    //upload click
+    uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'UPLOAD')]")
+    if err != nil {
+        log.Fatal( err )
+    }
+    uploadBtn.Click()
+
+    //check results
+    //TBD
+
+    return nil
+
+}
+
 func UpdateNavi10SMT(wd webdriver.WebDriver) {
 
     log.Println("Go to stacks")
@@ -116,4 +189,6 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
     gotoSpecNavi10Stack( wd )
 
     uploadVbiosBinary( wd )
+
+    uploadTestReport( wd )
 }
