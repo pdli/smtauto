@@ -11,7 +11,7 @@ func writeJsonFile( data StackConf ) {
 
     file, _ := json.MarshalIndent( data, "", "    ")
 
-    _ = ioutil.WriteFile("test.json", file, 0644)
+    _ = ioutil.WriteFile("stack_conf.json", file, 0644)
 
     fmt.Println("Called write Json File ")
 }
