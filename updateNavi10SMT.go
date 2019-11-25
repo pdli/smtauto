@@ -86,7 +86,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver) {
     }
 }
 
-func gotoSepciNavi10Stack(wd webdriver.WebDriver) {
+func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
 
     viewStackBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'VIEW STACKS')]")
     if err != nil {
@@ -113,7 +113,7 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 
     log.Println("Go to stacks")
 
-    gotoSpecificNavi10Stack( wd )
+    gotoSpecNavi10Stack( wd )
 
     uploadVbiosBinary( wd )
 }
