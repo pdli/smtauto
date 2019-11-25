@@ -10,7 +10,7 @@ import(
 func stackLoaded(wd webdriver.WebDriver) (bool, error) {
 
     //NV10-D18801W1947LN5
-    _, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='info-holder']/*[contains(text(), 'NV10-D18801W1947LN5')]")
+    _, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Overview')]")
     if err != nil {
         return false, err
     }
@@ -39,7 +39,7 @@ func vbiosUpdated(wd webdriver.WebDriver)(bool, error){
     return true, nil
 }
 
-func uploadVbiosBinary(wd webdriver.WebDriver) (error){
+func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
 
     //click Binaries
     binTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Binaries')]")
@@ -52,7 +52,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver) (error){
 
     //check if updated
     if err = wd.WaitWithTimeout(vbiosUpdated, 10 * time.Second); err == nil {
-        log.Println("VBIOS has already been updated - " + "BIOS____XXXX")
+        log.Println("VBIOS has already been updated - SKIP - ", biosVersion)
         return nil
     }
 
@@ -76,7 +76,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver) (error){
         log.Fatal( err )
     }
     versionSearchInput.Clear()
-    versionSearchInput.SendKeys("D1880201_102")
+    versionSearchInput.SendKeys( biosVersion )
 
     searchBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-form-field-suffix ng-tns-c11-29 ng-star-inserted']/*[contains(text(), 'search')]")
     if err != nil {
@@ -84,7 +84,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver) (error){
     }
     searchBtn.Click()
 
-    resultSpan, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted']/*[contains(text(), 'D1880201_102')]")
+    resultSpan, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted']/*[contains(text(), '"+ biosVersion +"')]")
     if err != nil {
         log.Fatal( err )
     }
@@ -106,19 +106,24 @@ func uploadVbiosBinary(wd webdriver.WebDriver) (error){
     return nil
 }
 
-func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
+func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string)(bool) {
 
-    viewStackBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'VIEW STACKS')]")
+    var loaded = true //false if not loaded
+
+    log.Println("***** Preparing to update Stack - ", stackName )
+
+    err := wd.Get("http://smt.amd.com/#/view/program/1258")
     if err != nil {
         log.Fatal( err )
     }
-    viewStackBtn.Click()
 
     time.Sleep( 5 * time.Second ) //wait for stacks page loading
 
-    lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), 'D18801W1947LN5')]")
+    lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), '"+ stackName +"')]")
     if err != nil {
-        log.Fatal( err )
+        log.Println("***** Cant' find spec Navi10 Stack - SKIP - ", stackName )
+        loaded = false
+        return loaded
     }
     lnxStackSpan.Click()
 
@@ -127,6 +132,8 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
         log.Fatal( "Time out for stack loading ==>" , err)
     }
 
+    //load to spec stack successfully
+    return loaded
 }
 
 func testReportUploaded(wd webdriver.WebDriver)(bool, error) {
@@ -150,7 +157,7 @@ func uploadTestReport(wd webdriver.WebDriver)(error) {
 
     //check test report uploaded or not
     if err = wd.WaitWithTimeout(testReportUploaded, 5 * time.Second); err == nil {
-        log.Println("Test Report has alreayd been uploaded yet ..., SKIP" )
+        log.Println("Test Report has alreayd been uploaded yet - SKIP" )
         return err
     }
 
@@ -186,9 +193,11 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 
     log.Println("Go to stacks")
 
-    gotoSpecNavi10Stack( wd )
+    for _, entry := range stackConf.LnxStack {
 
-    uploadVbiosBinary( wd )
-
-    uploadTestReport( wd )
+        if found := gotoSpecNavi10Stack( wd, entry.StackName ); found == true {   //upload binaries if founded
+            uploadVbiosBinary( wd, entry.VbiosVersion )
+            uploadTestReport( wd )
+        }
+    }
 }
