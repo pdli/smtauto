@@ -9,8 +9,8 @@ import(
 
 func stackLoaded(wd webdriver.WebDriver) (bool, error) {
 
-    //NV10-D18601W1944WN3
-    _, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='info-holder']/*[contains(text(), 'NV10-D18601W1944WN3')]")
+    //NV10-D18801W1947LN5
+    _, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='info-holder']/*[contains(text(), 'NV10-D18801W1947LN5')]")
     if err != nil {
         return false, err
     }
@@ -116,7 +116,7 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver) {
 
     time.Sleep( 5 * time.Second ) //wait for stacks page loading
 
-    lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), 'D18601W1944WN3')]")
+    lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), 'D18801W1947LN5')]")
     if err != nil {
         log.Fatal( err )
     }
@@ -149,7 +149,7 @@ func uploadTestReport(wd webdriver.WebDriver)(error) {
     testReportTab.Click()
 
     //check test report uploaded or not
-    if err = wd.WaitWithTimeout(testReportUploaded, 10 * time.Second); err == nil {
+    if err = wd.WaitWithTimeout(testReportUploaded, 5 * time.Second); err == nil {
         log.Println("Test Report has alreayd been uploaded yet ..., SKIP" )
         return err
     }
@@ -162,14 +162,14 @@ func uploadTestReport(wd webdriver.WebDriver)(error) {
     addReportBtn.Click()
 
     //select file
-    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-dialog-0']//input[@type='file']")
+    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-dialog-0']//div[@class='upload-file']/input[@type='file']")
     if err != nil {
       log.Fatal( err )
     }
-    fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.TestReport + "/" + stackConf.TestReport)
+    fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" + stackConf.TestReport)
 
     //upload click
-    uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'UPLOAD')]")
+    uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//button[@class='save-button mat-button ng-star-inserted']/span[contains(text(), 'UPLOAD')]")
     if err != nil {
         log.Fatal( err )
     }
