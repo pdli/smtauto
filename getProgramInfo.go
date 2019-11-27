@@ -36,6 +36,8 @@ func GetVBIOS() ([]string){
     filesName :=  readNavi10StackDir()
     vbiosSlice := make([]string, len(filesName))
 
+    fmt.Println("Get VBIOS info -> ")
+
     exp := `D18(\d){3}01[_|.]`
     r, err := regexp.Compile( exp )
     if err != nil {
@@ -46,7 +48,7 @@ func GetVBIOS() ([]string){
     for _, f := range filesName {
         if found := r.FindAllString( f, -1 ); found != nil {
           vbiosSlice[count] =  f
-          fmt.Println("Get VBIOS ==> ", count, vbiosSlice[count])
+          fmt.Println("  ==> ", count, vbiosSlice[count])
           count ++
         }
     }
@@ -60,6 +62,8 @@ func GetOSDB() ([]string){
     filesName := readNavi10StackDir()
     osdbSlice := make([]string, len(filesName))
 
+    fmt.Println("Get OSDB info ->")
+
     exp := `^amdgpu-pro-19.(\d)0-(.)*-ubuntu-18.04.tar.xz`
     r := regexp.MustCompile( exp )
 
@@ -67,7 +71,7 @@ func GetOSDB() ([]string){
     for _, f := range filesName {
         if found := r.FindAllString( f, -1); found != nil {
             osdbSlice[ count ] = f
-            fmt.Println("Get OSDB ==> ", count, osdbSlice[count])
+            fmt.Println("  ==> ", count, osdbSlice[count])
             count ++
         }
     }

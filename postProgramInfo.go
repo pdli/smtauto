@@ -86,8 +86,6 @@ func calcOsdbVersion(vbios string, osdbSlice []string) (string) {
 
     var osdbName = ""
 
-    fmt.Println("Print OSDB slice - ", osdbSlice)
-
     if targetRelease := calcTargetRelease( vbios ); targetRelease != "" {
         for  _, osdb := range osdbSlice {
             exp := targetRelease + `-(\d)*`
@@ -97,6 +95,8 @@ func calcOsdbVersion(vbios string, osdbSlice []string) (string) {
             }
         }
     }
+
+    fmt.Println("Calculate OSDB version - ", osdbName)
 
     return osdbName
 }
@@ -118,6 +118,7 @@ func calcOsdbID(vbios string, osdbSlice []string) (string){
 
 func PostAsicConf( ww string) {
 
+    //input WW48,...
     stackConf.Version = ww
 
     vbiosSlice := GetVBIOS()
