@@ -27,12 +27,6 @@ func newChromeDriver() (webdriver.WebDriver ) {
     }
     caps.AddChrome( chrCaps )
 
-    _, err := webdriver.NewService()
-    if err != nil {
-        log.Fatal( err )
-    }
-    defer s.Stop()
-
     wd, err := webdriver.NewRemote(caps, "")
     if err != nil {
         log.Fatal( err )
@@ -54,6 +48,16 @@ func mainPageLoaded(wd webdriver.WebDriver) (bool, error){
     }
 
     return true, nil
+}
+
+func NewWebService() ( *webdriver.Service){
+
+    service, err := webdriver.NewService()
+    if err != nil {
+        log.Fatal( err )
+    }
+
+    return service
 }
 
 func LogonSMT( smtUrl string) (wd webdriver.WebDriver){
