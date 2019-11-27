@@ -46,8 +46,8 @@ func GetVBIOS() ([]string){
     for _, f := range filesName {
         if found := r.FindAllString( f, -1 ); found != nil {
           vbiosSlice[count] =  f
-          count ++
           fmt.Println("Get VBIOS ==> ", count, vbiosSlice[count])
+          count ++
         }
     }
 
@@ -67,8 +67,8 @@ func GetOSDB() ([]string){
     for _, f := range filesName {
         if found := r.FindAllString( f, -1); found != nil {
             osdbSlice[ count ] = f
-            count ++
             fmt.Println("Get OSDB ==> ", count, osdbSlice[count])
+            count ++
         }
     }
 

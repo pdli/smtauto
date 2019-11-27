@@ -116,7 +116,9 @@ func calcOsdbID(vbios string, osdbSlice []string) (string){
     return osdbID
 }
 
-func PostAsicConf() {
+func PostAsicConf( ww string) {
+
+    stackConf.Version = ww
 
     vbiosSlice := GetVBIOS()
     osdbSlice := GetOSDB()
