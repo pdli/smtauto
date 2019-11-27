@@ -85,13 +85,15 @@ func GetTestReport() (string) {
     filesName := readNavi10StackDir()
     testReport := ""
 
+    fmt.Println("Get Test Report info ->")
+
     exp := `Navi10 Linux SW Stack Test Report (.)*.msg`
     r := regexp.MustCompile( exp )
 
     for _, f := range filesName {
         if found := r.FindAllString( f, -1); found != nil {
             testReport =  f
-            fmt.Println("Get test report ==> ", testReport)
+            fmt.Println("  ==> ", testReport)
             break
         }
     }
