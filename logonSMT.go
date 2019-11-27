@@ -27,11 +27,11 @@ func newChromeDriver() (webdriver.WebDriver ) {
     }
     caps.AddChrome( chrCaps )
 
-    //_, err := webdriver.NewService()
-    //if err != nil {
-    //    log.Fatal( err )
-    //}
-    //defer s.Stop()
+    _, err := webdriver.NewService()
+    if err != nil {
+        log.Fatal( err )
+    }
+    defer s.Stop()
 
     wd, err := webdriver.NewRemote(caps, "")
     if err != nil {
@@ -63,6 +63,14 @@ func LogonSMT( smtUrl string) (wd webdriver.WebDriver){
     if err := wd.Get( smtUrl ); err != nil {
         log.Fatal( err )
     }
+
+    //tried alert
+    wd.AcceptAlert()
+
+    alt, _ := wd.AlertText()
+    log.Println("Alert is ", alt)
+
+    //end of tried
 
     if err := wd.WaitWithTimeout(mainPageLoaded, 90 * time.Second); err != nil {
         log.Fatal( err )
