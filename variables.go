@@ -23,6 +23,13 @@ type StackConf struct {
     LnxStack []AsicConf
 }
 
+type VbiosConf struct {
+    Name string
+    Link string
+    Version string
+    LastVersion string
+}
+
 var (
     targetReleaseMap = map[string]string {
         "D182": "19.40",
@@ -49,5 +56,7 @@ var (
         Version: "WW47",
         StackPath: "/opt/shares/Navi10_Stack/",
     }
+
+    vbiosConf = []VbiosConf{}
 )
 

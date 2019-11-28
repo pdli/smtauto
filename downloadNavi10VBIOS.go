@@ -65,6 +65,11 @@ func GetLatestVbios() {
 
     for index, _ := range vbiosFileNameList {
 
-        _ = getSpecVbiosLink( index )
+        link := getSpecVbiosLink( index )
+        if link != "" {
+            vbiosConf = append(vbiosConf, VbiosConf{Name: vbiosFileNameList[index], Link: link})
+        }
     }
+
+    log.Println( vbiosConf )
 }
