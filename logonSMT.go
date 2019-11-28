@@ -1,7 +1,7 @@
 package smtauto
 
 import (
-//    "fmt"
+    "os"
     "flag"
     "log"
     "time"
@@ -11,6 +11,8 @@ import (
 
 func newChromeDriver() (webdriver.WebDriver ) {
 
+    homeDir := os.Getenv("HOME")
+
     chromeBinary := flag.String("chrome_binary", "/usr/bin/chromium-browser", "The name of the Chrome binary or the path to it. If name is not an exact path, the PATH will be searched.")
     chrCaps := chrome.Capabilities{
         Path: *chromeBinary,
@@ -19,6 +21,7 @@ func newChromeDriver() (webdriver.WebDriver ) {
             //"--disable-gpu",
             //"--no-sandbox",
             //"--window-size=800,600",
+            "--user-data-dir="+ homeDir +"/.config/chromium/",
         },
     }
     caps := webdriver.Capabilities{
@@ -68,13 +71,9 @@ func LogonSMT( smtUrl string) (wd webdriver.WebDriver){
         log.Fatal( err )
     }
 
-    //tried alert
-    wd.AcceptAlert()
+    time.Sleep( 5 * time.Second )
 
-    alt, _ := wd.AlertText()
-    log.Println("Alert is ", alt)
-
-    //end of tried
+    //TODO: automatically login SMT
 
     if err := wd.WaitWithTimeout(mainPageLoaded, 90 * time.Second); err != nil {
         log.Fatal( err )
