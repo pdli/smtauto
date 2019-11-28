@@ -38,6 +38,13 @@ var (
         "D189": "Navi10 XLE",
     }
 
+    vbiosFileNameList = []string{
+        "D1820101",
+        "D1870101",
+        "D1880201",
+        "D1890101",
+    }
+
     stackConf = StackConf{
         Version: "WW47",
         StackPath: "/opt/shares/Navi10_Stack/",
