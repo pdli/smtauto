@@ -58,14 +58,14 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
 
     //*****update vbios since it is not updated
     //select Action
-    selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Select Action')]")
+    selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='ui-panel-0-content']//div[@class='mat-raised-button']]")
     if err != nil {
         log.Fatal( err )
     }
     selectActBtn.Click()
 
     //link binary
-    linkBinBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='cdk-overlay-0']//*[contains(text(), 'Link Binary')]")
+    linkBinBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='cdk-overlay-0']//div[@class='mat-menu-content']/button[1]")
     if err != nil {
         log.Fatal( err )
     }
@@ -169,7 +169,7 @@ func uploadTestReport(wd webdriver.WebDriver)(error) {
     addReportBtn.Click()
 
     //select file
-    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-dialog-0']//div[@class='upload-file']/input[@type='file']")
+    fileInput, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='upload-file']/input[@type='file']")
     if err != nil {
       log.Fatal( err )
     }
