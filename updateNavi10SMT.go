@@ -48,8 +48,6 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
     }
     binTab.Click()
 
-    time.Sleep( 5 * time.Second)
-
     //check if updated
     if err = wd.WaitWithTimeout(vbiosUpdated, 10 * time.Second); err == nil {
         log.Println("VBIOS has already been updated - SKIP - ", biosVersion)
@@ -58,7 +56,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
 
     //*****update vbios since it is not updated
     //select Action
-    selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='ui-panel-0-content']//div[@class='mat-raised-button']]")
+    selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='ui-panel-0-content']//button[@class='mat-raised-button']")
     if err != nil {
         log.Fatal( err )
     }
@@ -183,10 +181,12 @@ func uploadTestReport(wd webdriver.WebDriver)(error) {
     uploadBtn.Click()
 
     //check results
-    //TBD
-
+    if err = wd.WaitWithTimeout(testReportUploaded, 5 * time.Second); err != nil {
+        log.Fatal("Test report upload failed...")
+    }else {
+        log.Println("Test report upload successful")
+    }
     return nil
-
 }
 
 func UpdateNavi10SMT(wd webdriver.WebDriver) {
