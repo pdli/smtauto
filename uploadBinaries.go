@@ -103,7 +103,7 @@ func getNewBinToUpload(wd webdriver.WebDriver) ([]string){
 
 func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 
-    log.Println("==> Conf of the ASIC to upload OSDB, ", asicConf)
+    log.Println("==> To upload OSDB, ", asicConf)
 
     if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
         log.Fatal( err )
@@ -174,11 +174,14 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 
 func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 
-    log.Println("==> Conf of the ASIC, ", asicConf)
+    log.Println("==> To upload VBIOS, ", asicConf)
 
     if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
         log.Fatal( err )
     }
+
+    //refresh webpage for loop
+    wd.Refresh()
 
     biosRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-3")
     if err != nil {
@@ -238,8 +241,6 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
     }
     uploadBtn.Click()
 
-    //Refresh webpage
-    wd.Refresh()
 }
 
 func UploadBinaries(wd webdriver.WebDriver) {
@@ -247,7 +248,7 @@ func UploadBinaries(wd webdriver.WebDriver) {
     if err := wd.WaitWithTimeout(uploadBtnLoaded, 10 * time.Second); err != nil {
         log.Fatal( err )
     }else {
-        log.Println("Will upload binaries")
+        log.Println("****** To upload binaries ******")
     }
 
     uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'UPLOAD BINARIES')]")
@@ -256,8 +257,6 @@ func UploadBinaries(wd webdriver.WebDriver) {
     }
     uploadBtn.Click()
 
-    log.Println("Binaries to be upload ==> ", stackConf.LnxStack)
-
     for index,_ := range stackConf.LnxStack {
         uploadBIOS(wd, stackConf.LnxStack[index])
         time.Sleep( 10 * time.Second )
@@ -265,12 +264,14 @@ func UploadBinaries(wd webdriver.WebDriver) {
 
     for index,_ := range stackConf.LnxStack {
         uploadOSDB(wd, stackConf.LnxStack[index])
-        time.Sleep(20 * time.Second )
+        time.Sleep( 20 * time.Second )
     }
 
     unUploadSlice := getNewBinToUpload(wd)
     if len(unUploadSlice)>0 {
-        log.Fatal("There are still binaries not uplaoded == ", unUploadSlice)
+        log.Println("There are still binaries not uplaoded!!! ====> ", unUploadSlice)
+    } else {
+        log.Println("Upload binaries successfully! Congratulations!")
     }
 
 }
