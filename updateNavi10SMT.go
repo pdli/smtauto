@@ -76,7 +76,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
     versionSearchInput.Clear()
     versionSearchInput.SendKeys( biosVersion )
 
-    searchBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='cdk-overlay-pane']//*[contains(text(), 'search')]")
+    searchBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='cdk-overlay-pane']//mat-icon[contains(text(), 'search')]")
     if err != nil {
         log.Fatal( err )
     }
