@@ -56,14 +56,14 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
 
     //*****update vbios since it is not updated
     //select Action
-    selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='ui-panel-0-content']//button[@class='mat-raised-button']")
+    selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='row']/div[@class='element-name']/button[@class='mat-raised-button']")
     if err != nil {
         log.Fatal( err )
     }
     selectActBtn.Click()
 
     //link binary
-    linkBinBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='cdk-overlay-0']//div[@class='mat-menu-content']/button[1]")
+    linkBinBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-menu-content']/button[1]")
     if err != nil {
         log.Fatal( err )
     }
@@ -76,7 +76,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
     versionSearchInput.Clear()
     versionSearchInput.SendKeys( biosVersion )
 
-    searchBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-form-field-suffix ng-tns-c11-29 ng-star-inserted']/*[contains(text(), 'search')]")
+    searchBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@role='dialog']//*[contains(text(), 'search')]")
     if err != nil {
         log.Fatal( err )
     }
