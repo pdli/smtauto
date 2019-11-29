@@ -119,7 +119,7 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string)(bool) {
 
     lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), '"+ stackName +"')]")
     if err != nil {
-        log.Println("***** Cant' find spec Navi10 Stack - SKIP - ", stackName )
+        log.Println("Cant' find spec Navi10 Stack - SKIP - ", stackName )
         loaded = false
         return loaded
     }
