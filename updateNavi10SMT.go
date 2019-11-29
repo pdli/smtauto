@@ -50,7 +50,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) (error){
 
     //check if updated
     if err = wd.WaitWithTimeout(vbiosUpdated, 10 * time.Second); err == nil {
-        log.Println("VBIOS has already been updated - SKIP - ", biosVersion)
+        log.Println("- SKIP - VBIOS has already been updated - ", biosVersion)
         return nil
     }
 
@@ -119,7 +119,7 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string)(bool) {
 
     lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), '"+ stackName +"')]")
     if err != nil {
-        log.Println("Cant' find spec Navi10 Stack - SKIP - ", stackName )
+        log.Println("- SKIP - Cant' find spec Navi10 Stack - ", stackName )
         loaded = false
         return loaded
     }
@@ -155,7 +155,7 @@ func uploadTestReport(wd webdriver.WebDriver)(error) {
 
     //check test report uploaded or not
     if err = wd.WaitWithTimeout(testReportUploaded, 5 * time.Second); err == nil {
-        log.Println("Test Report has alreayd been uploaded yet - SKIP" )
+        log.Println("- SKIP - Test Report has alreayd been uploaded yet" )
         return err
     }
 
