@@ -51,7 +51,7 @@ func LogonSMT(smtUrl string) (wd webdriver.WebDriver) {
 
 	wd = newChromeDriver()
 
-	if err := wd.Get(smtUrl); err != nil {
+	if err := wd.Get( smtUrl ); err != nil {
 		log.Fatal(err)
 	}
 
