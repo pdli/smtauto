@@ -2,32 +2,13 @@ package smtauto
 
 import (
 	"log"
-	"os"
 	"time"
 
 	"github.com/radutopala/webdriver"
-	"github.com/radutopala/webdriver/chrome"
 )
 
 func newChromeDriver() webdriver.WebDriver {
 
-	homeDir := os.Getenv("HOME")
-
-	//    chromeBinary := flag.String("chrome_binary", "/usr/bin/chromium-browser", "The name of the Chrome binary or the path to it. If name is not an exact path, the PATH will be searched.")
-	//	chromeBinary := flag.String("chrome_binary", "C:/Program Files (x86)/Google/Chrome/Application", "")
-	chrCaps := chrome.Capabilities{
-		//Path: *chromeBinary,
-		Args: []string{
-//			"--headless",
-//			"--disable-gpu",
-//			"--no-sandbox",
-			"--log-level=1",
-			//"--window-size=800,600",
-			"--remote-debugging-port=9222",
-			"--disable-dev-shm-usage",
-			"--user-data-dir=" + homeDir + "/.config/chromium/",
-		},
-	}
 	caps := webdriver.Capabilities{
 		"browserName": "chrome",
 		//		"path":        chromeBinary,
