@@ -3,7 +3,6 @@ package smtauto
 import (
 	"flag"
 	"os"
-
 	"github.com/radutopala/webdriver/chrome"
 )
 
