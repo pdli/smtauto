@@ -3,7 +3,6 @@ package smtauto
 import (
 	"log"
 	"time"
-
 	"github.com/radutopala/webdriver"
 )
 
