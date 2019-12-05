@@ -18,9 +18,9 @@ func newChromeDriver() webdriver.WebDriver {
 	chrCaps := chrome.Capabilities{
 		//Path: *chromeBinary,
 		Args: []string{
-			"--headless",
-			"--disable-gpu",
-			"--no-sandbox",
+//			"--headless",
+//			"--disable-gpu",
+//			"--no-sandbox",
 			"--log-level=1",
 			//"--window-size=800,600",
 			"--remote-debugging-port=9222",

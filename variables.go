@@ -47,11 +47,9 @@ var (
 		"D1880201",
 		"D1890101",
 	}
+ )
 
-	stackConf = StackConf{
-		Version:   "WW47",
-		StackPath: "//pauline.amd.com/shares/Navi10_Stack/",
-	}
+var (
 
 	vbiosConf = []VbiosConf{}
 )
