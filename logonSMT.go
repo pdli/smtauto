@@ -38,6 +38,7 @@ func mainPageLoaded(wd webdriver.WebDriver) (bool, error) {
 	return true, nil
 }
 
+//NewWebService return a chromedriver service to be launched
 func NewWebService() *webdriver.Service {
 
 	service, err := webdriver.NewService()
@@ -48,11 +49,12 @@ func NewWebService() *webdriver.Service {
 	return service
 }
 
-func LogonSMT(smtUrl string) (wd webdriver.WebDriver) {
+//LogonSMT will visit SMT website automatically
+func LogonSMT(smtURL string) (wd webdriver.WebDriver) {
 
 	wd = newChromeDriver()
 
-	if err := wd.Get(smtUrl); err != nil {
+	if err := wd.Get(smtURL); err != nil {
 		log.Fatal(err)
 	}
 

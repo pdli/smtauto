@@ -1,7 +1,6 @@
 package smtauto
 
-//    "fmt"
-
+//AsicConf define the info required to maintain one ASIC
 type AsicConf struct {
 	AsicName      string
 	StackName     string
@@ -12,6 +11,7 @@ type AsicConf struct {
 	OsdbID        string
 }
 
+//StackConf defines the info required to manage one weekly Linux Stack for Navi1x on SMT website
 type StackConf struct {
 	Version    string
 	StackPath  string
@@ -19,6 +19,7 @@ type StackConf struct {
 	LnxStack   []AsicConf
 }
 
+//VbiosConf defines the info collected from VBIOS website
 type VbiosConf struct {
 	Name        string
 	Link        string
@@ -47,9 +48,8 @@ var (
 		"D1880201",
 		"D1890101",
 	}
- )
+)
 
 var (
-
 	vbiosConf = []VbiosConf{}
 )

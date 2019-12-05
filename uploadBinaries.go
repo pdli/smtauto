@@ -72,7 +72,7 @@ func getNewBinToUpload(wd webdriver.WebDriver) []string {
 	count := 0
 
 	//Get new VBIOS
-	for index, _ := range stackConf.LnxStack {
+	for index := range stackConf.LnxStack {
 
 		if notFound := binNotExisted(wd, stackConf.LnxStack[index].VbiosVersion); notFound == true {
 			binSlice[count] = stackConf.LnxStack[index].VbiosVersion
@@ -81,7 +81,7 @@ func getNewBinToUpload(wd webdriver.WebDriver) []string {
 	}
 
 	//get new OSDB
-	for index, _ := range stackConf.LnxStack {
+	for index := range stackConf.LnxStack {
 
 		if notFound := binNotExisted(wd, stackConf.LnxStack[index].OsdbVersion); notFound == true {
 			binSlice[count] = stackConf.LnxStack[index].OsdbVersion
@@ -242,6 +242,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 
 }
 
+//UploadBinaries will upload all listed binaries(VBIOS/OSDB) into SMT website
 func UploadBinaries(wd webdriver.WebDriver) {
 
 	if err := wd.WaitWithTimeout(uploadBtnLoaded, 10*time.Second); err != nil {
@@ -256,12 +257,12 @@ func UploadBinaries(wd webdriver.WebDriver) {
 	}
 	uploadBtn.Click()
 
-	for index, _ := range stackConf.LnxStack {
+	for index := range stackConf.LnxStack {
 		uploadBIOS(wd, stackConf.LnxStack[index])
 		time.Sleep(10 * time.Second)
 	}
 
-	for index, _ := range stackConf.LnxStack {
+	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])
 		time.Sleep(20 * time.Second)
 	}

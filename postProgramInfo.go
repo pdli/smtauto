@@ -1,149 +1,149 @@
 package smtauto
 
 import (
-    "fmt"
-    "io/ioutil"
-    "encoding/json"
-    "regexp"
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"regexp"
 )
 
-func writeJsonFile( data StackConf ) {
+func writeJSONFile(data StackConf) {
 
-    file, _ := json.MarshalIndent( data, "", "    ")
+	file, _ := json.MarshalIndent(data, "", "    ")
 
-    _ = ioutil.WriteFile("stack_conf.json", file, 0644)
+	_ = ioutil.WriteFile("stack_conf.json", file, 0644)
 
-    fmt.Println("Called write Json File ")
+	fmt.Println("Called write Json File ")
 }
 
-func calcSmtStackName(vbios string) (string) {
+func calcSmtStackName(vbios string) string {
 
-    var stackName = ""
+	var stackName = ""
 
-    var ver = "46"
-    exp := `(\d){2}`
-    r := regexp.MustCompile( exp )
-    if found := r.FindAllString( stackConf.Version, 1); found !=nil {
-        ver = found[0]
-    }
+	var ver = "46"
+	exp := `(\d){2}`
+	r := regexp.MustCompile(exp)
+	if found := r.FindAllString(stackConf.Version, 1); found != nil {
+		ver = found[0]
+	}
 
-    exp = `D18(\d)`
-    r = regexp.MustCompile( exp )
-    if found := r.FindAllString( vbios, 1); found != nil {
-        stackName = found[0] + "01W19" + ver  + "LN5" 
-    }
+	exp = `D18(\d)`
+	r = regexp.MustCompile(exp)
+	if found := r.FindAllString(vbios, 1); found != nil {
+		stackName = found[0] + "01W19" + ver + "LN5"
+	}
 
-    return stackName
+	return stackName
 }
 
-func calcVbiosVersion(vbios string) (string) {
+func calcVbiosVersion(vbios string) string {
 
-    var vbiosName = ""
+	var vbiosName = ""
 
-    exp := `D(\d)*[.|_](\d)*`
-    r := regexp.MustCompile( exp )
-    if found := r.FindAllString( vbios, 1); found != nil {
-        vbiosName = found[0]
-    }
+	exp := `D(\d)*[.|_](\d)*`
+	r := regexp.MustCompile(exp)
+	if found := r.FindAllString(vbios, 1); found != nil {
+		vbiosName = found[0]
+	}
 
-    exp = `\.`
-    r = regexp.MustCompile( exp )
-    vbiosName = r.ReplaceAllString( vbiosName, "_")
+	exp = `\.`
+	r = regexp.MustCompile(exp)
+	vbiosName = r.ReplaceAllString(vbiosName, "_")
 
-    return vbiosName
+	return vbiosName
 }
 
-func calcAsicName(vbios string) (string) {
+func calcAsicName(vbios string) string {
 
-    var asicName = ""
+	var asicName = ""
 
-    exp := `D18(\d)`
-    r := regexp.MustCompile( exp )
+	exp := `D18(\d)`
+	r := regexp.MustCompile(exp)
 
-    if found := r.FindAllString( vbios, 1); found != nil {
-        asicName = asicNameMap[found[0]]
-    }
+	if found := r.FindAllString(vbios, 1); found != nil {
+		asicName = asicNameMap[found[0]]
+	}
 
-   return asicName
+	return asicName
 }
 
-func calcTargetRelease(vbios string) (string) {
+func calcTargetRelease(vbios string) string {
 
-    var targetRelease = ""
+	var targetRelease = ""
 
-    exp := `D18(\d)`
-    r := regexp.MustCompile( exp )
+	exp := `D18(\d)`
+	r := regexp.MustCompile(exp)
 
-    if found := r.FindAllString( vbios, 1); found != nil {
-        targetRelease = targetReleaseMap[found[0]]
-    }
+	if found := r.FindAllString(vbios, 1); found != nil {
+		targetRelease = targetReleaseMap[found[0]]
+	}
 
-    return targetRelease
+	return targetRelease
 }
 
+func calcOsdbVersion(vbios string, osdbSlice []string) string {
 
-func calcOsdbVersion(vbios string, osdbSlice []string) (string) {
+	var osdbName = ""
 
-    var osdbName = ""
+	if targetRelease := calcTargetRelease(vbios); targetRelease != "" {
+		for _, osdb := range osdbSlice {
+			exp := targetRelease + `-(\d)*`
+			r := regexp.MustCompile(exp)
+			if found := r.FindAllString(osdb, 1); found != nil {
+				osdbName = found[0]
+			}
+		}
+	}
 
-    if targetRelease := calcTargetRelease( vbios ); targetRelease != "" {
-        for  _, osdb := range osdbSlice {
-            exp := targetRelease + `-(\d)*`
-            r := regexp.MustCompile( exp )
-            if found := r.FindAllString( osdb, 1); found != nil {
-                osdbName = found[0]
-            }
-        }
-    }
+	fmt.Println("Calculate OSDB version - ", osdbName)
 
-    fmt.Println("Calculate OSDB version - ", osdbName)
-
-    return osdbName
+	return osdbName
 }
 
-func calcOsdbID(vbios string, osdbSlice []string) (string){
+func calcOsdbID(vbios string, osdbSlice []string) string {
 
-    var osdbID = ""
+	var osdbID = ""
 
-    osdbName := calcOsdbVersion( vbios, osdbSlice )
+	osdbName := calcOsdbVersion(vbios, osdbSlice)
 
-    exp := `(\d)*$`
-    r := regexp.MustCompile( exp )
-    if found := r.FindAllString( osdbName, 1); found != nil {
-        osdbID = found[0]
-    }
+	exp := `(\d)*$`
+	r := regexp.MustCompile(exp)
+	if found := r.FindAllString(osdbName, 1); found != nil {
+		osdbID = found[0]
+	}
 
-    return osdbID
+	return osdbID
 }
 
-func PostAsicConf( ww string) {
+//PostAsicConf will collect & write ASIC config into stack_conf.JSON
+func PostAsicConf(ww string) {
 
-    //input WW48,...
-    stackConf.Version = ww
+	//input WW48,...
+	stackConf.Version = ww
 
-    vbiosSlice := GetVBIOS()
-    osdbSlice := GetOSDB()
+	vbiosSlice := GetVBIOS()
+	osdbSlice := GetOSDB()
 
-    asicConf := make([]AsicConf, len(vbiosSlice))
+	asicConf := make([]AsicConf, len(vbiosSlice))
 
-    i := 0
-    for _, raw := range vbiosSlice{
-        if raw != "" {
-            asicConf[i].StackName = calcSmtStackName( raw )
-            asicConf[i].VbiosVersion = calcVbiosVersion( raw )
-            asicConf[i].VbiosFileName = raw
-            asicConf[i].OsdbVersion = calcOsdbVersion( raw, osdbSlice )//"amdgpu-pro-19.40"
-            asicConf[i].OsdbID = calcOsdbID( raw, osdbSlice )//"amdgpu-pro-19.40"
-            asicConf[i].AsicName = calcAsicName ( raw ) //"D18x"
-            asicConf[i].TargetRelease = calcTargetRelease( raw ) //"19.40"
-            i ++
-        }
-    }
+	i := 0
+	for _, raw := range vbiosSlice {
+		if raw != "" {
+			asicConf[i].StackName = calcSmtStackName(raw)
+			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
+			asicConf[i].VbiosFileName = raw
+			asicConf[i].OsdbVersion = calcOsdbVersion(raw, osdbSlice) //"amdgpu-pro-19.40"
+			asicConf[i].OsdbID = calcOsdbID(raw, osdbSlice)           //"amdgpu-pro-19.40"
+			asicConf[i].AsicName = calcAsicName(raw)                  //"D18x"
+			asicConf[i].TargetRelease = calcTargetRelease(raw)        //"19.40"
+			i++
+		}
+	}
 
-    fmt.Println("ASIC conf ==> ", asicConf)
+	fmt.Println("ASIC conf ==> ", asicConf)
 
-    stackConf.TestReport = GetTestReport()
-    stackConf.LnxStack = asicConf
+	stackConf.TestReport = GetTestReport()
+	stackConf.LnxStack = asicConf
 
-    writeJsonFile( stackConf )
+	writeJSONFile(stackConf)
 }
