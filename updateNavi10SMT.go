@@ -130,7 +130,7 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string) bool {
 
 func osdbUpdated(wd webdriver.WebDriver) (bool, error) {
 
-	_, err := wd.FindElement(webdriver.ByXPATH, "(//p-panel)[2]//*[contains(text(), 'Status: Uploaded')]")
+	_, err := wd.FindElement(webdriver.ByXPATH, "//p-panel[position()=2]//*[contains(text(), 'Status: Uploaded')]")
 	if err != nil {
 		return false, err
 	}
@@ -141,7 +141,7 @@ func osdbUpdated(wd webdriver.WebDriver) (bool, error) {
 func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
 
 	//check if updated
-	if err := wd.WaitWithTimeout(vbiosUpdated, 1*time.Second); err == nil {
+	if _, err := wd.WaitWithTimeout(vbiosUpdated, 1*time.Second); err == nil {
 		log.Println("- SKIP - OSDB has already been updated - ", osdbVersion)
 		return nil
 	}
