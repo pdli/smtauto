@@ -31,7 +31,7 @@ func binaryLinked(wd webdriver.WebDriver) (bool, error) {
 
 func vbiosUpdated(wd webdriver.WebDriver) (bool, error) {
 
-	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Status: Uploaded')]")
+	_, err := wd.FindElement(webdriver.ByXPATH, "//p-panel[1]//*[contains(text(), 'Status: Uploaded')]")
 	if err != nil {
 		return false, err
 	}
@@ -41,22 +41,15 @@ func vbiosUpdated(wd webdriver.WebDriver) (bool, error) {
 
 func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) error {
 
-	//click Binaries
-	binTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Binaries')]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	binTab.Click()
-
 	//check if updated
-	if err = wd.WaitWithTimeout(vbiosUpdated, 10*time.Second); err == nil {
+	if err := wd.WaitWithTimeout(vbiosUpdated, 1*time.Second); err == nil {
 		log.Println("- SKIP - VBIOS has already been updated - ", biosVersion)
 		return nil
 	}
 
 	//*****update vbios since it is not updated
 	//select Action
-	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='row']/div[@class='element-name']/button[@class='mat-raised-button']")
+	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='row'][1]/div[@class='element-name']/button[@class='mat-raised-button']")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,7 +62,8 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) error {
 	}
 	linkBinBtn.Click()
 
-	versionSearchInput, err := wd.FindElement(webdriver.ByID, "mat-input-3")
+	//search vbios - //*[@id="mat-input-5"]
+	versionSearchInput, err := wd.FindElement(webdriver.ByXPATH, "//mat-dialog-container//input[@name='query']")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -132,6 +126,106 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string) bool {
 
 	//load to spec stack successfully
 	return loaded
+}
+
+func osdbUpdated(wd webdriver.WebDriver) (bool, error) {
+
+	_, err := wd.FindElement(webdriver.ByXPATH, "(//p-panel)[2]//*[contains(text(), 'Status: Uploaded')]")
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
+
+	//check if updated
+	if err := wd.WaitWithTimeout(vbiosUpdated, 1*time.Second); err == nil {
+		log.Println("- SKIP - OSDB has already been updated - ", osdbVersion)
+		return nil
+	}
+
+	//*****update vbios since it is not updated
+	//select Action
+	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='row'][2]/div[@class='element-name']/button[@class='mat-raised-button']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	selectActBtn.Click()
+
+	//link binary
+	linkBinBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-menu-content']/button[1]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	linkBinBtn.Click()
+
+	//search vbios - //*[@id="mat-input-5"]
+	versionSearchInput, err := wd.FindElement(webdriver.ByXPATH, "//mat-dialog-container//input[@name='query']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	versionSearchInput.Clear()
+	versionSearchInput.SendKeys(osdbVersion)
+
+	searchBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='cdk-overlay-pane']//mat-icon[contains(text(), 'search')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	searchBtn.Click()
+
+	resultSpan, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted']/*[contains(text(), '"+osdbVersion+"')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	resultSpan.Click()
+
+	linkBinaryBtn, err := wd.FindElement(webdriver.ByXPATH, "//button/*[contains(text(), 'LINK BINARY')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	linkBinaryBtn.Click()
+
+	//Binary linked successfully
+	if err = wd.WaitWithTimeout(binaryLinked, 20*time.Second); err != nil {
+		log.Fatal("Binary linked failed...", err)
+	} else {
+		log.Println("Binary linked successful")
+	}
+
+	return nil
+
+}
+
+func binariesTabLoaded(wd webdriver.WebDriver) (bool, error) {
+
+	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'DOWNLOAD')]")
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func uploadBinaries(wd webdriver.WebDriver, asicConf AsicConf) error {
+
+	//goto Binaries tab - click Binaries
+	binTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Binaries')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	binTab.Click()
+
+	if err = wd.WaitWithTimeout(binariesTabLoaded, 1*time.Second); err != nil {
+		log.Fatal("Binaries tab failed to be loaded")
+	}
+
+	//upload VBIOS & OSDB separately
+	uploadVbiosBinary(wd, asicConf.VbiosVersion)
+	uploadOsdbBinary(wd, asicConf.OsdbVersion)
+
+	return nil
 }
 
 func testReportUploaded(wd webdriver.WebDriver) (bool, error) {
@@ -197,7 +291,7 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 	for _, entry := range stackConf.LnxStack {
 
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
-			uploadVbiosBinary(wd, entry.VbiosVersion)
+			uploadBinaries(wd, entry)
 			uploadTestReport(wd)
 		}
 	}
