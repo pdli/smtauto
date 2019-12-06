@@ -154,7 +154,7 @@ func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
 
 	//*****update vbios since it is not updated
 	//select Action
-	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='row'][2]/div[@class='element-name']/button[@class='mat-raised-button']")
+	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='row'])[2]/div[@class='element-name']/button[@class='mat-raised-button']")
 	if err != nil {
 		log.Fatal(err)
 	}
