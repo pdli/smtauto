@@ -141,7 +141,7 @@ func osdbUpdated(wd webdriver.WebDriver) (bool, error) {
 func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
 
 	//check if updated
-	if err := wd.WaitWithTimeout(vbiosUpdated, 1*time.Second); err == nil {
+	if err := wd.WaitWithTimeout(osdbUpdated, 1*time.Second); err == nil {
 		log.Println("- SKIP - OSDB has already been updated - ", osdbVersion)
 		return nil
 	}
