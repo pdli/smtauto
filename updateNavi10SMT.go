@@ -130,7 +130,13 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string) bool {
 
 func osdbUpdated(wd webdriver.WebDriver) (bool, error) {
 
-	_, err := wd.FindElement(webdriver.ByXPATH, "//p-panel[position()=2]//*[contains(text(), 'Status: Uploaded')]")
+    _, err := wd.FindElement(webdriver.ByXPATH, "//p-panel[position()=2]")
+    if err != nil {
+      log.Println("- SKIP - OSDB binary is not requried by SMT.")
+      return true, nil
+    }
+
+	_, err = wd.FindElement(webdriver.ByXPATH, "//p-panel[position()=2]//*[contains(text(), 'Status: Uploaded')]")
 	if err != nil {
 		return false, err
 	}
