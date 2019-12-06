@@ -31,7 +31,7 @@ func binaryLinked(wd webdriver.WebDriver) (bool, error) {
 
 func vbiosUpdated(wd webdriver.WebDriver) (bool, error) {
 
-	_, err := wd.FindElement(webdriver.ByXPATH, "//p-panel[1]//*[contains(text(), 'Status: Uploaded')]")
+	_, err := wd.FindElement(webdriver.ByXPATH, "(//p-panel)[1]//*[contains(text(), 'Status: Uploaded')]")
 	if err != nil {
 		return false, err
 	}
@@ -49,7 +49,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) error {
 
 	//*****update vbios since it is not updated
 	//select Action
-	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='row'][1]/div[@class='element-name']/button[@class='mat-raised-button']")
+	selectActBtn, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='row'])[1]/div[@class='element-name']/button[@class='mat-raised-button']")
 	if err != nil {
 		log.Fatal(err)
 	}
