@@ -90,9 +90,9 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) error {
 
 	//Binary linked successfully
 	if err = wd.WaitWithTimeout(binaryLinked, 20*time.Second); err != nil {
-		log.Fatal("Binary linked failed...", err)
+		log.Fatal("VBIOS Binary linked failed...", err)
 	} else {
-		log.Println("Binary linked successful")
+		log.Println("VBIOS Binary linked successful")
 	}
 
 	return nil
@@ -195,9 +195,9 @@ func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
 
 	//Binary linked successfully
 	if err = wd.WaitWithTimeout(binaryLinked, 20*time.Second); err != nil {
-		log.Fatal("Binary linked failed...", err)
+		log.Fatal("OSDB Binary linked failed...", err)
 	} else {
-		log.Println("Binary linked successful")
+		log.Println("OSDB Binary linked successful")
 	}
 
 	return nil
