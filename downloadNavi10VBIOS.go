@@ -18,28 +18,28 @@ func wget(url, filepath string) error {
 	return cmd.Run()
 }
 
-func downloadBiosPage() {
+func downloadBiosPage(asicName string) {
 
-	url := "http://home.amd.com/VideoBios/Video%20BIOS%20Releases/SingleASICRelease.asp?AsicName=navi10"
-	filepath := "./SingleAsicNavi10.html"
+	url := "http://home.amd.com/VideoBios/Video%20BIOS%20Releases/SingleASICRelease.asp?AsicName=" + asicName
+	filepath := "./SingleAsic" + asicName + ".html"
 	if err := wget(url, filepath); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func getSpecVbiosLink(index int) string {
+func getSpecVbiosLink(asicName string, index int) string {
 
 	var vbiosLink = ""
 
 	//read navi10 bios web page
-	raw, err := ioutil.ReadFile("./SingleAsicNavi10.html")
+	raw, err := ioutil.ReadFile("./SingleAsic" + asicName + ".html")
 	if err != nil {
 		log.Fatal(err)
 	}
 	weblines := strings.Split(string(raw), "\n")
 
 	//get download link for specific bios
-	exp := "http://storeiis2/BIOSTest/SignedBIOS.*_" + vbiosFileNameList[index] + ".*signed.rom"
+	exp := "http://storeiis2/BIOSTest/SignedBIOS.*_" + biosFileMap[asicName][index] + ".*signed.rom"
 	r := regexp.MustCompile(exp)
 
 	for _, entry := range weblines {
@@ -59,15 +59,15 @@ func getSpecVbiosLink(index int) string {
 }
 
 //GetLatestVbios to list latet VBIOS version per specific ASIC
-func GetLatestVbios() {
+func GetLatestVbios(asicName string) {
 
-	downloadBiosPage()
+	downloadBiosPage(asicName)
 
-	for index := range vbiosFileNameList { //Match / Should omit 2nd valud
+	for index := range biosFileMap[asicName] { //Match / Should omit 2nd valud
 
-		link := getSpecVbiosLink(index)
+		link := getSpecVbiosLink(asicName, index)
 		if link != "" {
-			vbiosConf = append(vbiosConf, VbiosConf{Name: vbiosFileNameList[index], Link: link})
+			vbiosConf = append(vbiosConf, VbiosConf{Name: biosFileMap[asicName][index], Link: link})
 		}
 	}
 

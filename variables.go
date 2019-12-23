@@ -42,11 +42,20 @@ var (
 		"D189": "Navi10 XLE",
 	}
 
-	vbiosFileNameList = []string{
-		"D1820101",
-		"D1870101",
-		"D1880201",
-		"D1890101",
+	biosFileMap = map[string][]string{
+		"navi10": []string{
+			"D1820101",
+			"D1870101",
+			"D1880201",
+			"D1890101",
+		},
+		"navi14": []string{
+			"D3220500",
+			"D3221500",
+			"D3221600",
+			"D3250100",
+			"D3231000",
+		},
 	}
 )
 
