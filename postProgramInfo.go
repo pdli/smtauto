@@ -30,7 +30,7 @@ func calcSmtStackName(vbios string) string {
 	exp = `D18(\d)`
 	r = regexp.MustCompile(exp)
 	if found := r.FindAllString(vbios, 1); found != nil {
-		stackName = found[0] + "01W19" + ver + "LN5"
+		stackName = found[0] + "01W2" + ver + "LN4"
 	}
 
 	return stackName
