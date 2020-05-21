@@ -21,7 +21,7 @@ func wget(url, filepath string) error {
 func downloadBiosPage(asicName string) {
 
 	url := "http://home.amd.com/VideoBios/Video%20BIOS%20Releases/SingleASICRelease.asp?AsicName=" + asicName
-	filepath := "./SingleAsic" + asicName + ".html"
+	filepath := "./logs/SingleAsic" + asicName + ".html"
 	if err := wget(url, filepath); err != nil {
 		log.Fatal(err)
 	}
@@ -32,7 +32,7 @@ func getSpecVbiosLink(asicName string, index int) string {
 	var vbiosLink = ""
 
 	//read navi10 bios web page
-	raw, err := ioutil.ReadFile("./SingleAsic" + asicName + ".html")
+	raw, err := ioutil.ReadFile("./logs/SingleAsic" + asicName + ".html")
 	if err != nil {
 		log.Fatal(err)
 	}
