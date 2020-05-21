@@ -39,7 +39,7 @@ func getSpecVbiosLink(asicName string, index int) string {
 	weblines := strings.Split(string(raw), "\n")
 
 	//get download link for specific bios
-	exp := "http://storeiis2/BIOSTest/SignedBIOS.*_" + biosFileMap[asicName][index] + ".*signed.rom"
+	exp := "http://storeiis2/BIOSTest/SignedBIOS/.*" + biosFileMap[asicName][index] + ".*"
 	r := regexp.MustCompile(exp)
 
 	for _, entry := range weblines {
