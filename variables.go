@@ -29,17 +29,15 @@ type VbiosConf struct {
 
 var (
 	targetReleaseMap = map[string]string{
-		"D182": "19.40",
-		"D187": "19.40",
-		"D188": "19.50",
-		"D189": "19.50",
+		"D412": "20.30",
+		"D414": "20.30",
+		"D417": "20.30",
 	}
 
 	asicNameMap = map[string]string{
-		"D182": "Navi10 XT",
-		"D187": "Navi10 XM",
-		"D188": "Navi10 Pro-XL",
-		"D189": "Navi10 XLE",
+		"D412": "Navi21 XTX",
+		"D414": "Navi21 XL",
+		"D417": "Navi21 GL-XTA",
 	}
 
 	biosFileMap = map[string][]string{
@@ -56,11 +54,11 @@ var (
 			"D3250100",
 			"D3231000",
 		},
-        "navi21": []string{
-            "D4120XTX",
-            "D4140XTX",
-            "D41711XT",
-        },
+		"navi21": []string{
+			"D4120XTX",
+			"D4140XTX",
+			"D41711XT",
+		},
 	}
 )
 

@@ -20,17 +20,10 @@ func calcSmtStackName(vbios string) string {
 
 	var stackName = ""
 
-	var ver = "46"
-	exp := `(\d){2}`
+	exp := `D41(\d){2}`
 	r := regexp.MustCompile(exp)
-	if found := r.FindAllString(stackConf.Version, 1); found != nil {
-		ver = found[0]
-	}
-
-	exp = `D18(\d)`
-	r = regexp.MustCompile(exp)
 	if found := r.FindAllString(vbios, 1); found != nil {
-		stackName = found[0] + "01W2" + ver + "LN4"
+		stackName = found[0] + "1" + stackConf.Version
 	}
 
 	return stackName
@@ -40,7 +33,7 @@ func calcVbiosVersion(vbios string) string {
 
 	var vbiosName = ""
 
-	exp := `D(\d)*[.|_](\d)*`
+	exp := `D(\d)*[a-zA-Z]*[.|_](\d)*`
 	r := regexp.MustCompile(exp)
 	if found := r.FindAllString(vbios, 1); found != nil {
 		vbiosName = found[0]
@@ -57,7 +50,7 @@ func calcAsicName(vbios string) string {
 
 	var asicName = ""
 
-	exp := `D18(\d)`
+	exp := `D41(\d)`
 	r := regexp.MustCompile(exp)
 
 	if found := r.FindAllString(vbios, 1); found != nil {
@@ -71,7 +64,7 @@ func calcTargetRelease(vbios string) string {
 
 	var targetRelease = ""
 
-	exp := `D18(\d)`
+	exp := `D41(\d)`
 	r := regexp.MustCompile(exp)
 
 	if found := r.FindAllString(vbios, 1); found != nil {

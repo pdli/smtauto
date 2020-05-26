@@ -6,8 +6,8 @@ import (
 
 var (
 	stackConf = StackConf{
-		Version:   "WW47",
-		StackPath: "//pauline.amd.com/shares/Navi10_Stack/",
+		Version:   "W2021LNX",
+		StackPath: "//pauline.amd.com/shares/Navi21_Stack/",
 	}
 
 	chrCaps = chrome.Capabilities{

@@ -9,7 +9,7 @@ import (
 )
 
 func readNavi10StackDir() []string {
-
+	log.Println(stackConf.Version)
 	filesName, err := ioutil.ReadDir(stackConf.StackPath + "/" + stackConf.Version)
 	if err != nil {
 		log.Fatal(err)
@@ -32,7 +32,7 @@ func GetVBIOS() []string {
 
 	fmt.Println("Get VBIOS info -> ")
 
-	exp := `D18(\d){3}01[_|.]`
+	exp := `D41(\d){2}[0-9a-zA-Z]{3}[_|.]`
 	r, err := regexp.Compile(exp)
 	if err != nil {
 		log.Fatal(err)
@@ -59,7 +59,7 @@ func GetOSDB() []string {
 
 	fmt.Println("Get OSDB info ->")
 
-	exp := `^amdgpu-pro-19.(\d)0-(.)*-ubuntu-18.04.tar.xz`
+	exp := `^amdgpu-pro-20.(\d)0-(.)*-ubuntu-18.04.tar.xz`
 	r := regexp.MustCompile(exp)
 
 	count := 0

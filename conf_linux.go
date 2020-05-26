@@ -9,8 +9,8 @@ import (
 
 var (
 	stackConf = StackConf{
-		Version:   "WW47",
-		StackPath: "/opt/shares/Navi10_Stack/",
+		Version:   "W2021LNX",
+		StackPath: "/opt/shares/Navi21_Stack/",
 	}
 
 	chromeBinary = flag.String("chrome_binary", "/usr/bin/chromium-browser", "The name of the Chrome binary or the path to it. If name is not an exact path, the PATH will be searched.")
