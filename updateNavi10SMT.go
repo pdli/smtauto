@@ -296,6 +296,7 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 
 	for _, entry := range stackConf.LnxStack {
 
+log.Println("Capture")
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
 			uploadBinaries(wd, entry)
 			uploadTestReport(wd)

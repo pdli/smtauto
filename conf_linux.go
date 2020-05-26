@@ -22,7 +22,7 @@ var (
 			//"--no-sandbox",
 			//"--log-level=1",
 			//"--remote-debugging-port=9222",
-			//"--disable-dev-shm-usage",
+			"--disable-dev-shm-usage",
 			"--user-data-dir=" + os.Getenv("HOME") + "/.config/chromium/",
 		},
 	}
