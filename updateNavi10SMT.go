@@ -104,7 +104,7 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string) bool {
 
 	log.Println("***** Preparing to update Stack - ", stackName)
 
-	err := wd.Get("http://smt.amd.com/#/view/program/1258")
+	err := wd.Get("http://smt.amd.com/#/view/program/1289")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -205,13 +205,131 @@ func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
 }
 
 func binariesTabLoaded(wd webdriver.WebDriver) (bool, error) {
-
 	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'DOWNLOAD')]")
 	if err != nil {
 		return false, err
 	}
 
 	return true, nil
+}
+
+func newStackPageLoaded(wd webdriver.WebDriver) (bool, error) {
+	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'SELECT SKU')]")
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func skuListLoaded(wd webdriver.WebDriver) (bool, error) {
+	_, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='cdk-overlay-pane'])[2]")
+	if err != nil {
+		return false, err
+	}
+
+	return true, nil
+}
+
+func createStacks(wd webdriver.WebDriver, asicConf AsicConf) error {
+
+	log.Println("==> Start to create New stack: ", asicConf.StackName)
+
+	//check if stack existed
+	_, err := wd.FindElement(webdriver.ByXPATH, "//h4[contains(text(), '"+asicConf.StackName+"')]")
+	if err == nil {
+		log.Println("==> Linux Stack has been created: ", asicConf.StackName)
+		return nil
+	}
+
+	//create a new stack if not existed
+	//click new stack
+	newBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'NEW STACK')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	newBtn.Click()
+
+	//wait for new stack page loaded
+	if err = wd.WaitWithTimeout(newStackPageLoaded, 10*time.Second); err != nil {
+		log.Fatal("New stack page failed to be loaded")
+		return nil
+	}
+
+	//click SKU List
+	skuListBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'SKU LIST')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	skuListBtn.Click()
+
+	//wait for SKU list displayed
+	if err = wd.WaitWithTimeout(skuListLoaded, 10*time.Second); err != nil {
+		log.Fatal("Failed to load SKU List")
+	}
+
+	//choose SKU
+	skuOpt, err := wd.FindElement(webdriver.ByXPATH, "//mat-option//span[contains(text(), '"+asicConf.AsicName+"')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	skuOpt.Click()
+
+	//choose start date
+	startBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'Start Date')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	startBtn.Click()
+
+	startTodayBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-calendar-body-cell-content mat-calendar-body-today']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	startTodayBtn.Click()
+
+	//choose end date
+	endBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'Release Date')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	endBtn.Click()
+
+	endDateBtn, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-calendar-body-cell-content mat-calendar-body-today']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	endDateBtn.Click()
+
+	//Set version sufix =LNX
+	sufixInput, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='suffix small ng-star-inserted']/input[@type='text']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sufixInput.SendKeys("LNX")
+
+	//choose IFWI element
+	ifwiCheckbox, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='sub-content']//mat-checkbox)[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	ifwiCheckbox.Click()
+
+	//choose GPU element
+	gpuCheckbox, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='sub-content']//mat-checkbox)[3]//input[@type='checkbox']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	gpuCheckbox.Click()
+
+	//create Stack
+	createBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'CREATE STACK')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	createBtn.Click()
+
+	return nil
 }
 
 func uploadBinaries(wd webdriver.WebDriver, asicConf AsicConf) error {
@@ -296,7 +414,7 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 
 	for _, entry := range stackConf.LnxStack {
 
-log.Println("Capture")
+		createStacks(wd, entry)
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
 			uploadBinaries(wd, entry)
 			uploadTestReport(wd)

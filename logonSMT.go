@@ -30,7 +30,7 @@ func newChromeDriver() webdriver.WebDriver {
 
 func mainPageLoaded(wd webdriver.WebDriver) (bool, error) {
 
-	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'CLONE')]")
+	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'NEW STACK')]")
 	if err != nil {
 		return false, err
 	}

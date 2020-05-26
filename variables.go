@@ -35,9 +35,9 @@ var (
 	}
 
 	asicNameMap = map[string]string{
-		"D412": "Navi21 XTX",
-		"D414": "Navi21 XL",
-		"D417": "Navi21 GL-XTA",
+		"D412": "D41201 XTX",
+		"D414": "D41401 XL",
+		"D417": "D41711 GL XL",
 	}
 
 	biosFileMap = map[string][]string{
