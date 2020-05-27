@@ -111,9 +111,9 @@ func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string) bool {
 
 	time.Sleep(5 * time.Second) //wait for stacks page loading
 
-	lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//span[@class='progress-text']/*[contains(text(), '"+stackName+"')]")
+	lnxStackSpan, err := wd.FindElement(webdriver.ByXPATH, "//h4[contains(text(), '"+stackName+"')]")
 	if err != nil {
-		log.Println("- SKIP - Cant' find spec Navi10 Stack - ", stackName)
+		log.Println("- SKIP - Cant' find the spec Linux Stack - ", stackName)
 		loaded = false
 		return loaded
 	}
@@ -214,7 +214,7 @@ func binariesTabLoaded(wd webdriver.WebDriver) (bool, error) {
 }
 
 func newStackPageLoaded(wd webdriver.WebDriver) (bool, error) {
-	_, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'SELECT SKU')]")
+	_, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'SKU LIST')]")
 	if err != nil {
 		return false, err
 	}
@@ -242,9 +242,10 @@ func createStacks(wd webdriver.WebDriver, asicConf AsicConf) error {
 		return nil
 	}
 
+	log.Println("==> Need to create a new Linux Stack: ", asicConf.StackName)
 	//create a new stack if not existed
 	//click new stack
-	newBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'NEW STACK')]")
+	newBtn, err := wd.FindElement(webdriver.ByXPATH, "(//button[@class='add-stack mat-button ng-star-inserted'])[1]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -316,7 +317,7 @@ func createStacks(wd webdriver.WebDriver, asicConf AsicConf) error {
 	ifwiCheckbox.Click()
 
 	//choose GPU element
-	gpuCheckbox, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='sub-content']//mat-checkbox)[3]")
+	gpuCheckbox, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='sub-content']//mat-checkbox)[4]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -337,7 +338,7 @@ func createStacks(wd webdriver.WebDriver, asicConf AsicConf) error {
 	createBtn.Click()
 
 	//Wait for the completion of creation
-	time.Sleep(5 * time.Second)
+	time.Sleep(10 * time.Second)
 
 	return nil
 }
@@ -427,7 +428,7 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 		createStacks(wd, entry)
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
 			uploadBinaries(wd, entry)
-			uploadTestReport(wd)
+			//uploadTestReport(wd)
 		}
 	}
 }
