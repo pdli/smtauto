@@ -316,18 +316,28 @@ func createStacks(wd webdriver.WebDriver, asicConf AsicConf) error {
 	ifwiCheckbox.Click()
 
 	//choose GPU element
-	gpuCheckbox, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='sub-content']//mat-checkbox)[3]//input[@type='checkbox']")
+	gpuCheckbox, err := wd.FindElement(webdriver.ByXPATH, "(//div[@class='sub-content']//mat-checkbox)[3]")
 	if err != nil {
 		log.Fatal(err)
 	}
 	gpuCheckbox.Click()
 
+	//un-click Testing
+	testCheckbox, err := wd.FindElement(webdriver.ByXPATH, "//mat-checkbox[@class='mat-checkbox mat-accent ng-untouched ng-pristine ng-valid mat-checkbox-checked']")
+	if err != nil {
+		log.Fatal(err)
+	}
+	testCheckbox.Click()
+
 	//create Stack
-	createBtn, err := wd.FindElement(webdriver.ByXPATH, "//span[contains(text(), 'CREATE STACK')]")
+	createBtn, err := wd.FindElement(webdriver.ByXPATH, "//button[@class='save-button mat-button ng-star-inserted']")
 	if err != nil {
 		log.Fatal(err)
 	}
 	createBtn.Click()
+
+	//Wait for the completion of creation
+	time.Sleep(5 * time.Second)
 
 	return nil
 }
