@@ -245,22 +245,12 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 //UploadBinaries will upload all listed binaries(VBIOS/OSDB) into SMT website
 func UploadBinaries(wd webdriver.WebDriver) {
 
-	if err := wd.WaitWithTimeout(uploadBtnLoaded, 10*time.Second); err != nil {
-		log.Fatal(err)
-	} else {
-		log.Println("****** To upload binaries ******")
-	}
+	log.Println("****** To upload binaries ******")
 
-	uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'UPLOAD BINARIES')]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	uploadBtn.Click()
-
-	for index := range stackConf.LnxStack {
+	/*for index := range stackConf.LnxStack {
 		uploadBIOS(wd, stackConf.LnxStack[index])
 		time.Sleep(10 * time.Second)
-	}
+	}*/
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])
