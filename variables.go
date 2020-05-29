@@ -2,6 +2,7 @@ package smtauto
 
 //AsicConf define the info required to maintain one ASIC
 type AsicConf struct {
+	ProgramName   string
 	AsicName      string
 	StackName     string
 	TargetRelease string

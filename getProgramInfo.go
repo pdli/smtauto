@@ -59,7 +59,7 @@ func GetOSDB() []string {
 
 	fmt.Println("Get OSDB info ->")
 
-	exp := `^amdgpu-pro-20.(\d)0-(.)*-ubuntu-18.04.tar.xz`
+	exp := `^amdgpu-pro-20.(\d)0-(.)*-ubuntu-20.04.tar.xz`
 	r := regexp.MustCompile(exp)
 
 	count := 0

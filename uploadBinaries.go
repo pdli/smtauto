@@ -193,7 +193,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	programInput.Clear()
-	programInput.SendKeys("Navi 10")
+	programInput.SendKeys(asicConf.ProgramName)
 
 	fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
 	if err != nil {
@@ -247,10 +247,10 @@ func UploadBinaries(wd webdriver.WebDriver) {
 
 	log.Println("****** To upload binaries ******")
 
-	/*for index := range stackConf.LnxStack {
+	for index := range stackConf.LnxStack {
 		uploadBIOS(wd, stackConf.LnxStack[index])
 		time.Sleep(10 * time.Second)
-	}*/
+	}
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])

@@ -41,7 +41,7 @@ func calcVbiosVersion(vbios string) string {
 
 	exp = `\.`
 	r = regexp.MustCompile(exp)
-	vbiosName = r.ReplaceAllString(vbiosName, ".")
+	vbiosName = r.ReplaceAllString(vbiosName, "__")
 
 	return vbiosName
 }
@@ -122,6 +122,7 @@ func PostAsicConf(ww string) {
 	i := 0
 	for _, raw := range vbiosSlice {
 		if raw != "" {
+			asicConf[i].ProgramName = "Navi 21"
 			asicConf[i].StackName = calcSmtStackName(raw)
 			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
 			asicConf[i].VbiosFileName = raw
