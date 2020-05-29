@@ -138,9 +138,9 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 	//http://lnx-jfrog/artifactory/osibuild-packages-cache/949708/hybrid_rel.u1804_64/amdgpu-pro-19.50-949708-ubuntu-18.04.tar.xz
 	ubuntuLink := "http://lnx-jfrog/artifactory/osibuild-packages-cache/" +
 		asicConf.OsdbID +
-		"/hybrid_rel.u1804_64/amdgpu-pro-" +
+		"/hybrid_rel.u2004_64/amdgpu-pro-" +
 		asicConf.OsdbVersion +
-		"-ubuntu-18.04.tar.xz"
+		"-ubuntu-20.04.tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
 
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
@@ -155,9 +155,9 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osInput.Clear()
-	osInput.SendKeys("Linux Ubuntu 18.04 LTS")
+	osInput.SendKeys("Linux Ubuntu 20.04 LTS")
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 18.04')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 20.04')]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -226,9 +226,9 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osInput.Clear()
-	osInput.SendKeys("Linux Ubuntu 18.04 LTS")
+	osInput.SendKeys("Linux Ubuntu 20.04 LTS")
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 18.04')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 20.04')]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -247,10 +247,10 @@ func UploadBinaries(wd webdriver.WebDriver) {
 
 	log.Println("****** To upload binaries ******")
 
-	for index := range stackConf.LnxStack {
+	/*for index := range stackConf.LnxStack {
 		uploadBIOS(wd, stackConf.LnxStack[index])
 		time.Sleep(10 * time.Second)
-	}
+	}*/
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])
