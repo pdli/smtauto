@@ -81,7 +81,7 @@ func calcOsdbVersion(vbios string, osdbSlice []string) string {
 
 	if targetRelease := calcTargetRelease(vbios); targetRelease != "" {
 		for _, osdb := range osdbSlice {
-			exp := targetRelease + `-(\d)*` + `-([a-z]*)` + `-(\d)*.(\d)*`
+			exp := targetRelease + `-(\d)*`
 			r := regexp.MustCompile(exp)
 			if found := r.FindAllString(osdb, 1); found != nil {
 				osdbName = found[0]
