@@ -418,8 +418,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	return nil
 }
 
-//UpdateNavi10SMT hello world
-func UpdateNavi10SMT(wd webdriver.WebDriver) {
+func UpdateSMTforLinux(wd webdriver.WebDriver) {
 
 	log.Println("Go to stacks")
 
