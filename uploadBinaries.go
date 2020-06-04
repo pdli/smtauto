@@ -111,18 +111,20 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 	//refresh webpage for loop
 	wd.Refresh()
 
+	//Click Software in upload type
 	osdbRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-2")
 	if err != nil {
 		log.Fatal(err)
 	}
 	osdbRadioBtn.Click()
 
+	//SW Name
 	swNameInput, err := wd.FindElement(webdriver.ByID, "sw")
 	if err != nil {
 		log.Fatal(err)
 	}
 	swNameInput.Clear()
-	swNameInput.SendKeys("AMD GPU DRIVE")
+	swNameInput.SendKeys("AMD GPU DRIVER")
 
 	swListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-0']//span[contains(text(), 'AMD GPU DRIVER')]")
 	if err != nil {
@@ -140,7 +142,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		asicConf.OsdbID +
 		"/hybrid_rel.u2004_64/amdgpu-pro-" +
 		asicConf.OsdbVersion +
-		"-ubuntu-20.04.tar.xz"
+		".tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
 
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
@@ -155,9 +157,9 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osInput.Clear()
-	osInput.SendKeys("Linux Ubuntu 20.04 LTS")
+	osInput.SendKeys("Linux")
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 20.04')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux')]")
 	if err != nil {
 		log.Fatal(err)
 	}
