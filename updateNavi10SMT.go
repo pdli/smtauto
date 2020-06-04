@@ -428,7 +428,7 @@ func UpdateNavi10SMT(wd webdriver.WebDriver) {
 		createStacks(wd, entry)
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
 			uploadBinaries(wd, entry)
-			uploadTestReport(wd)
+			//uploadTestReport(wd)
 		}
 	}
 }

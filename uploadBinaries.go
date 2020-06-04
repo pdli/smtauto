@@ -142,7 +142,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		asicConf.OsdbID +
 		"/hybrid_rel.u2004_64/amdgpu-pro-" +
 		asicConf.OsdbVersion +
-		".tar.xz"
+		"-ubuntu-20.04.tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
 
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
