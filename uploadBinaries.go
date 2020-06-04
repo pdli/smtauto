@@ -177,11 +177,6 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 
 	log.Println("==> To upload VBIOS, ", asicConf)
 
-	if "" == asicConf.VbiosVersion {
-		log.Println("  *** Skip to upload VBIOS, VbiosVersion is empty *** ")
-		return
-	}
-
 	if err := wd.Get("http://smt.amd.com/#/upload?uploadID="); err != nil {
 		log.Fatal(err)
 	}
