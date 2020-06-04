@@ -2,6 +2,7 @@ package smtauto
 
 import (
 	"log"
+	"os"
 	"time"
 
 	"github.com/radutopala/webdriver"
@@ -137,12 +138,12 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	httpLinkInput.Clear()
-	//http://lnx-jfrog/artifactory/osibuild-packages-cache/949708/hybrid_rel.u1804_64/amdgpu-pro-19.50-949708-ubuntu-18.04.tar.xz
+	//URL - http://lnx-jfrog/artifactory/osibuild-packages-cache/949708/hybrid_rel.u1804_64/amdgpu-pro-19.50-949708-ubuntu-18.04.tar.xz
 	ubuntuLink := "http://lnx-jfrog/artifactory/osibuild-packages-cache/" +
 		asicConf.OsdbID +
-		"/hybrid_rel.u2004_64/amdgpu-pro-" +
+		"/hybrid_rel." + asicConf.DistroShortName + "/amdgpu-pro-" +
 		asicConf.OsdbVersion +
-		"-ubuntu-20.04.tar.xz"
+		"-" + asicConf.DistroName + ".tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
 
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
@@ -164,7 +165,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osListBox.Click()
-
+	os.Exit(1)
 	uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[@class='submit-button mat-raised-button']")
 	if err != nil {
 		log.Fatal(err)
@@ -252,10 +253,10 @@ func UploadBinaries(wd webdriver.WebDriver) {
 
 	log.Println("****** To upload binaries ******")
 
-	for index := range stackConf.LnxStack {
+	/*for index := range stackConf.LnxStack {
 		uploadBIOS(wd, stackConf.LnxStack[index])
 		time.Sleep(10 * time.Second)
-	}
+	}*/
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])

@@ -126,6 +126,8 @@ func PostAsicConf(ww string) {
 		if raw != "" {
 			asicConf[i].ProgramName = "Navi 21"
 			asicConf[i].ProgramID = "1289"
+			asicConf[i].DistroName = "ubuntu-20.04"
+			asicConf[i].DistroShortName = "u2004_64"
 			asicConf[i].StackName = calcSmtStackName(raw)
 			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
 			asicConf[i].VbiosFileName = raw

@@ -2,15 +2,17 @@ package smtauto
 
 //AsicConf define the info required to maintain one ASIC
 type AsicConf struct {
-	ProgramName   string
-	ProgramID     string
-	AsicName      string
-	StackName     string
-	TargetRelease string
-	VbiosVersion  string
-	VbiosFileName string
-	OsdbVersion   string
-	OsdbID        string
+	ProgramName     string
+	ProgramID       string
+	DistroName      string
+	DistroShortName string
+	AsicName        string
+	StackName       string
+	TargetRelease   string
+	VbiosVersion    string
+	VbiosFileName   string
+	OsdbVersion     string
+	OsdbID          string
 }
 
 //StackConf defines the info required to manage one weekly Linux Stack for Navi1x on SMT website
