@@ -184,12 +184,14 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 	//refresh webpage for loop
 	wd.Refresh()
 
+	//Click BIOS for upload Type
 	biosRadioBtn, err := wd.FindElement(webdriver.ByID, "mat-radio-3")
 	if err != nil {
 		log.Fatal(err)
 	}
 	biosRadioBtn.Click()
 
+	//Input Program
 	programInput, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='mat-form-field-infix']/input[@id='cont']")
 	if err != nil {
 		log.Fatal(err)
@@ -197,6 +199,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 	programInput.Clear()
 	programInput.SendKeys(asicConf.ProgramName)
 
+	//File Upload
 	fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
 	if err != nil {
 		log.Fatal(err)
@@ -228,9 +231,9 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osInput.Clear()
-	osInput.SendKeys("Linux Ubuntu 20.04 LTS")
+	osInput.SendKeys("Linux")
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux Ubuntu 20.04')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux')]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -249,10 +252,10 @@ func UploadBinaries(wd webdriver.WebDriver) {
 
 	log.Println("****** To upload binaries ******")
 
-	/*for index := range stackConf.LnxStack {
+	for index := range stackConf.LnxStack {
 		uploadBIOS(wd, stackConf.LnxStack[index])
 		time.Sleep(10 * time.Second)
-	}*/
+	}
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])

@@ -125,6 +125,7 @@ func PostAsicConf(ww string) {
 	for _, raw := range vbiosSlice {
 		if raw != "" {
 			asicConf[i].ProgramName = "Navi 21"
+			asicConf[i].ProgramID = "1289"
 			asicConf[i].StackName = calcSmtStackName(raw)
 			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
 			asicConf[i].VbiosFileName = raw

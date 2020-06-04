@@ -1,5 +1,0 @@
-package smtauto
-
-import(
-
-)
