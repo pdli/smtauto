@@ -418,6 +418,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	return nil
 }
 
+//UpdateSMTforLinux to update SMT
 func UpdateSMTforLinux(wd webdriver.WebDriver) {
 
 	log.Println("Go to stacks")
