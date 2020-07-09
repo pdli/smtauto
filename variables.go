@@ -31,6 +31,18 @@ type VbiosConf struct {
 	LastVersion string
 }
 
+//IfwiFirmwareConf defines the firmwares version in IFWI
+type IfwiFirmwareConf struct {
+	MC          string
+	DMUCB       string
+	SecPolicyL0 string
+	SecPolicyL1 string
+	SMU         string
+	PspBL       string
+	DXIO        string
+	VBL         string
+}
+
 var (
 	targetReleaseMap = map[string]string{
 		"D412": "20.30",

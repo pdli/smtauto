@@ -6,7 +6,7 @@ import (
 
 var (
 	stackConf = StackConf{
-		Version:   "W2021LNX",
+		Version:   "W2028LNX",
 		StackPath: "//pauline.amd.com/shares/Navi21_Stack",
 	}
 
