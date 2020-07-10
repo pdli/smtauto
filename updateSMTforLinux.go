@@ -508,7 +508,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 
 	// 2- Update firmware version of Linux GPU driver
 	//input SDMA
-	sdmalInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[1]/td[2]/input[2]")
+	sdmalInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[1]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -516,7 +516,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	sdmalInput.SendKeys(gpuDriverConf.SDMA)
 
 	//input ME
-	meInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[2]/td[2]/input[2]")
+	meInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[2]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -524,7 +524,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	meInput.SendKeys(gpuDriverConf.ME)
 
 	//input MEC
-	mecInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[3]/td[2]/input[2]")
+	mecInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[3]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -532,7 +532,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	mecInput.SendKeys(gpuDriverConf.MEC)
 
 	//input VCN
-	vncInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[4]/td[2]/input[2]")
+	vncInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[4]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -540,7 +540,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	vncInput.SendKeys(gpuDriverConf.VCN)
 
 	//input PFP
-	pfpInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[5]/td[2]/input[2]")
+	pfpInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[5]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -548,7 +548,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	pfpInput.SendKeys(gpuDriverConf.PFP)
 
 	//input RLC
-	rlcInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[6]/td[2]/input[2]")
+	rlcInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[6]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -556,7 +556,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	rlcInput.SendKeys(gpuDriverConf.RLC)
 
 	//input SMC
-	smcInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[7]/td[2]/input[2]")
+	smcInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[7]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -564,7 +564,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	smcInput.SendKeys(gpuDriverConf.SMC)
 
 	//input CE
-	ceInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[8]/td[2]/input[2]")
+	ceInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[8]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -572,7 +572,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	ceInput.SendKeys(gpuDriverConf.CE)
 
 	//input SOS
-	sosInput, err := wd.FindElement(webdriver.ByXPATH, "/div[4]//app-firmware-select/div/div/table/tbody/tr[9]/td[2]/input[2]")
+	sosInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[9]/td[2]/input[2]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -597,8 +597,8 @@ func UpdateSMTforLinux(wd webdriver.WebDriver) {
 		createStacks(wd, entry)
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
 			updateStackComponents(wd)
-			//uploadBinaries(wd, entry)
-			//uploadTestReport(wd)
+			uploadBinaries(wd, entry)
+			uploadTestReport(wd)
 		}
 	}
 }
