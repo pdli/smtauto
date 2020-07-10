@@ -76,7 +76,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) error {
 	}
 	searchBtn.Click()
 
-	resultSpan, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted']/*[contains(text(), '"+biosVersion+"')]")
+	resultSpan, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='query-results ng-star-inserted'][last()]/*[contains(text(), '"+biosVersion+"')]")
 	if err != nil {
 		log.Fatal(err)
 	}

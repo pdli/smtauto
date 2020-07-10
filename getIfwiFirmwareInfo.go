@@ -33,7 +33,8 @@ func readFileLineByLine(fileName string) []string {
 func findGpuDriverComponentFromList(list []string, comp string) (bool, string) {
 
 	//Format of FW version - Firmware,"MC: <br/>VCE: 0.0<br/>UVD: 0.0<br/> ....
-	re := regexp.MustCompile("Firmware,.*" + comp + `:\s(\w+\.\w+)(<br.*)`)
+	//									RLC: 80.1<br/>RLC SRLC: 0.0
+	re := regexp.MustCompile("Firmware,.*<br/>" + comp + ": " + `(\w+\.\w+)(<br.*)`)
 
 	for _, value := range list {
 		str := re.FindStringSubmatch(value)

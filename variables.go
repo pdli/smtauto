@@ -58,9 +58,9 @@ type GpuDriverFirmwareConf struct {
 
 var (
 	targetReleaseMap = map[string]string{
-		"D412": "20.30",
-		"D414": "20.30",
-		"D417": "20.30",
+		"D412": "20.40",
+		"D414": "20.40",
+		"D417": "20.40",
 	}
 
 	asicNameMap = map[string]string{

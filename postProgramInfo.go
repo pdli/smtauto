@@ -98,13 +98,13 @@ func calcOsdbID(vbios string, osdbSlice []string) string {
 
 	var osdbID = ""
 
-	//"20.30-1085420-ubuntu-20.04"
+	//osdbVersion - "20.30-1085420"
 	osdbName := calcOsdbVersion(vbios, osdbSlice)
 
 	exp := `(\d)*`
 	r := regexp.MustCompile(exp)
 	if found := r.FindAllString(osdbName, -1); found != nil {
-		osdbID = found[0]
+		osdbID = found[2]
 	}
 
 	return osdbID
