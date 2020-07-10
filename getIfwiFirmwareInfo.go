@@ -84,7 +84,6 @@ func GetIfwiComponentsForStack() IfwiFirmwareConf {
 	_, ifwiConf.DXIO = findIfwiComponentFromList(fwConfList, "DXIO")
 	_, ifwiConf.VBL = findIfwiComponentFromList(fwConfList, "PSP VBL")
 
-	fmt.Println("++++++")
 	fmt.Println(ifwiConf)
 
 	return ifwiConf

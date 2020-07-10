@@ -83,7 +83,7 @@ func GetTestReport() string {
 
 	fmt.Println("Get Test Report info ->")
 
-	exp := `Navi21 Linux SW Stack (.)*.msg`
+	exp := `Navi(.)*.msg`
 	r := regexp.MustCompile(exp)
 
 	for _, f := range filesName {

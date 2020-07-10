@@ -194,7 +194,7 @@ func uploadOsdbBinary(wd webdriver.WebDriver, osdbVersion string) error {
 	linkBinaryBtn.Click()
 
 	//Binary linked successfully
-	if err = wd.WaitWithTimeout(binaryLinked, 20*time.Second); err != nil {
+	if err = wd.WaitWithTimeout(binaryLinked, 30*time.Second); err != nil {
 		log.Fatal("OSDB Binary linked failed...", err)
 	} else {
 		log.Println("OSDB Binary linked successful")
@@ -360,6 +360,9 @@ func uploadBinaries(wd webdriver.WebDriver, asicConf AsicConf) error {
 	uploadVbiosBinary(wd, asicConf.VbiosVersion)
 	uploadOsdbBinary(wd, asicConf.OsdbVersion)
 
+	//Wait for the completion of upload
+	time.Sleep(10 * time.Second)
+
 	return nil
 }
 
@@ -389,6 +392,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	}
 
 	//add report click
+	log.Println("Add report")
 	addReportBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'ADD REPORT')]")
 	if err != nil {
 		log.Fatal(err)
@@ -396,6 +400,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	addReportBtn.Click()
 
 	//select file
+	log.Println("To select Files - " + stackConf.StackPath + "/" + stackConf.Version + "/" + stackConf.TestReport)
 	fileInput, err := wd.FindElement(webdriver.ByXPATH, "//div[@class='upload-file']/input[@type='file']")
 	if err != nil {
 		log.Fatal(err)
@@ -403,6 +408,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" + stackConf.TestReport)
 
 	//upload click
+	log.Println("To click upload")
 	uploadBtn, err := wd.FindElement(webdriver.ByXPATH, "//button[@class='save-button mat-button ng-star-inserted']/span[contains(text(), 'UPLOAD')]")
 	if err != nil {
 		log.Fatal(err)
@@ -410,6 +416,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	uploadBtn.Click()
 
 	//check results
+	log.Println("To check result of test report")
 	if err = wd.WaitWithTimeout(testReportUploaded, 5*time.Second); err != nil {
 		log.Fatal("Test report upload failed...")
 	} else {
