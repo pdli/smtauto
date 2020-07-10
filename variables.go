@@ -43,6 +43,19 @@ type IfwiFirmwareConf struct {
 	VBL         string
 }
 
+//GpuDriverFirmwareConf defines the firmwares version from Linux GPU driver
+type GpuDriverFirmwareConf struct {
+	SDMA string
+	ME   string
+	MEC  string
+	VCN  string
+	PFP  string
+	RLC  string
+	SMC  string
+	CE   string
+	SOS  string
+}
+
 var (
 	targetReleaseMap = map[string]string{
 		"D412": "20.30",

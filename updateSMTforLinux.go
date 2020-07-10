@@ -424,6 +424,9 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	// get Firmwre info of IFWI
 	ifwiConf := GetIfwiComponentsForStack()
 
+	// get Firmware info of Linux GPU Driver
+	gpuDriverConf := GetGpuDriverComponentsForStack()
+
 	//goto EDIT web page
 	editBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'EDIT')]")
 	if err != nil {
@@ -438,6 +441,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	}
 	firmwaresTab.Click()
 
+	// 1- Update Firmware info of IFWI
 	//input MC
 	mcInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[1]/td[2]/input[2]")
 	if err != nil {
@@ -501,6 +505,79 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	}
 	vblInput.Clear()
 	vblInput.SendKeys(ifwiConf.VBL)
+
+	// 2- Update firmware version of Linux GPU driver
+	//input SDMA
+	sdmalInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[1]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sdmalInput.Clear()
+	sdmalInput.SendKeys(gpuDriverConf.SDMA)
+
+	//input ME
+	meInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[2]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	meInput.Clear()
+	meInput.SendKeys(gpuDriverConf.ME)
+
+	//input MEC
+	mecInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[3]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	mecInput.Clear()
+	mecInput.SendKeys(gpuDriverConf.MEC)
+
+	//input VCN
+	vncInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[4]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	vncInput.Clear()
+	vncInput.SendKeys(gpuDriverConf.VCN)
+
+	//input PFP
+	pfpInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[5]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	pfpInput.Clear()
+	pfpInput.SendKeys(gpuDriverConf.PFP)
+
+	//input RLC
+	rlcInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[6]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	rlcInput.Clear()
+	rlcInput.SendKeys(gpuDriverConf.RLC)
+
+	//input SMC
+	smcInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[7]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	smcInput.Clear()
+	smcInput.SendKeys(gpuDriverConf.SMC)
+
+	//input CE
+	ceInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[8]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	ceInput.Clear()
+	ceInput.SendKeys(gpuDriverConf.CE)
+
+	//input SOS
+	sosInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select[2]/div/div/table/tbody/tr[9]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	sosInput.Clear()
+	sosInput.SendKeys(gpuDriverConf.SOS)
 
 	//click Save Stack
 	saveStackBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'SAVE STACK')]")
