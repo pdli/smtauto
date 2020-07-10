@@ -104,7 +104,7 @@ func calcOsdbID(vbios string, osdbSlice []string) string {
 	exp := `(\d)*`
 	r := regexp.MustCompile(exp)
 	if found := r.FindAllString(osdbName, -1); found != nil {
-		osdbID = found[2]
+		osdbID = found[0]
 	}
 
 	return osdbID

@@ -418,6 +418,92 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	return nil
 }
 
+//updateStackComponents - update IFWI / Linux-GPU-Driver
+func updateStackComponents(wd webdriver.WebDriver) {
+
+	// get Firmwre info of IFWI
+	ifwiConf := GetIfwiComponentsForStack()
+
+	//goto EDIT web page
+	editBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'EDIT')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	editBtn.Click()
+
+	//goto Firmware tab
+	firmwaresTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'Firmwares')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	firmwaresTab.Click()
+
+	//input MC
+	mcInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[1]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	mcInput.Clear()
+	mcInput.SendKeys(ifwiConf.MC)
+
+	//input DMUCB
+	dmucbInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[2]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	dmucbInput.Clear()
+	dmucbInput.SendKeys(ifwiConf.DMUCB)
+
+	//input SEC Policy L0
+	policyL0Input, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[3]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	policyL0Input.Clear()
+	policyL0Input.SendKeys(ifwiConf.SecPolicyL0)
+
+	//input SEC Policy L1
+	policyL1Input, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[4]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	policyL1Input.Clear()
+	policyL1Input.SendKeys(ifwiConf.SecPolicyL1)
+
+	//input SMU
+	smuInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[5]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	smuInput.Clear()
+	smuInput.SendKeys(ifwiConf.SMU)
+
+	//input PSP-BL
+	pspBLInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[6]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	pspBLInput.Clear()
+	pspBLInput.SendKeys(ifwiConf.PspBL)
+
+	//input DXIO
+	dxioInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[7]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	dxioInput.Clear()
+	dxioInput.SendKeys(ifwiConf.DXIO)
+
+	//input VBL
+	vblInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[8]/td[2]/input[2]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	vblInput.Clear()
+	vblInput.SendKeys(ifwiConf.VBL)
+
+}
+
 //UpdateSMTforLinux to update SMT
 func UpdateSMTforLinux(wd webdriver.WebDriver) {
 
@@ -427,8 +513,9 @@ func UpdateSMTforLinux(wd webdriver.WebDriver) {
 
 		createStacks(wd, entry)
 		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
-			uploadBinaries(wd, entry)
-			uploadTestReport(wd)
+			updateStackComponents(wd)
+			//uploadBinaries(wd, entry)
+			//uploadTestReport(wd)
 		}
 	}
 }
