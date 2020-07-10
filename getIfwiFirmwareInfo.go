@@ -36,18 +36,16 @@ func findComponentFromList(list []string, comp string) (bool, string) {
 	//Format of FW version in release note - UMC  v87.03.15.00[2020-06-05]
 	//										 SEC  v0B.21.00.1C[2020-06-14]
 	//Return - found, value
-	fmt.Println(comp)
 	re := regexp.MustCompile(comp + `\s*v(\w{2}(\.\w{2})*)`)
 
 	for _, value := range list {
 		str := re.FindStringSubmatch(value)
 		if len(str) > 2 {
-			fmt.Println(str[1])
 			return true, str[1]
 		}
 	}
 
-	fmt.Println("Failed to find firmware from IFWI release notes - ", comp)
+	fmt.Println("**** WARNING : Failed to find firmware from IFWI release notes - ", comp)
 
 	return false, ""
 }

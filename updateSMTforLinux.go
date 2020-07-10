@@ -502,6 +502,12 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	vblInput.Clear()
 	vblInput.SendKeys(ifwiConf.VBL)
 
+	//click Save Stack
+	saveStackBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'SAVE STACK')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	saveStackBtn.Click()
 }
 
 //UpdateSMTforLinux to update SMT
