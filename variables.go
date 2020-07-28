@@ -57,6 +57,12 @@ type GpuDriverFirmwareConf struct {
 }
 
 var (
+	//programIDMap provides the mapping btw Program Name and Program ID of SMT stack
+	programIDMap = map[string]string{
+		"Navi21": "1289",
+		"Navi22": "1297",
+	}
+
 	targetReleaseMap = map[string]string{
 		"D412": "20.40",
 		"D414": "20.40",

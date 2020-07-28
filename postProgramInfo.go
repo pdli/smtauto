@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"regexp"
 )
 
@@ -145,4 +146,21 @@ func PostAsicConf(ww string) {
 	stackConf.LnxStack = asicConf
 
 	writeJSONFile(stackConf)
+}
+
+//GetProgramID to provide program ID of SMT stack per programName
+func GetProgramID(programName string) string {
+	//pre-define the format of programName - Navi21
+
+	//get program ID from map
+	id := programIDMap[programName]
+
+	//Alert if programID doesn't exist
+	if id == "" {
+		fmt.Println("Error - Invalid Program Name: ", programName)
+		os.Exit(1)
+	}
+
+	//return program ID
+	return id
 }
