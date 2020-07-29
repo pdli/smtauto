@@ -159,9 +159,9 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osInput.Clear()
-	osInput.SendKeys("Linux")
+	osInput.SendKeys(asicConf.OsName)
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), '"+ asicConf.OsName+"')]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -233,9 +233,9 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	osInput.Clear()
-	osInput.SendKeys("Linux")
+	osInput.SendKeys(asicConf.OsName)
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), 'Linux')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), '"+asicConf.OsName +"')]")
 	if err != nil {
 		log.Fatal(err)
 	}

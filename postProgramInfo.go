@@ -21,7 +21,7 @@ func calcSmtStackName(vbios string) string {
 
 	var stackName = ""
 
-	exp := `D41(\d){2}`
+	exp := `D(\d){4}`
 	r := regexp.MustCompile(exp)
 	if found := r.FindAllString(vbios, 1); found != nil {
 		stackName = found[0] + "1" + stackConf.Version
@@ -51,7 +51,7 @@ func calcAsicName(vbios string) string {
 
 	var asicName = ""
 
-	exp := `D41(\d)`
+	exp := `D(\d){3}`
 	r := regexp.MustCompile(exp)
 
 	if found := r.FindAllString(vbios, 1); found != nil {
@@ -65,7 +65,7 @@ func calcTargetRelease(vbios string) string {
 
 	var targetRelease = ""
 
-	exp := `D41(\d)`
+	exp := `D(\d){3}`
 	r := regexp.MustCompile(exp)
 
 	if found := r.FindAllString(vbios, 1); found != nil {
@@ -102,6 +102,8 @@ func calcOsdbID(vbios string, osdbSlice []string) string {
 	//osdbVersion - "20.30-1085420"
 	osdbName := calcOsdbVersion(vbios, osdbSlice)
 
+	fmt.Println("osdbname is - ", osdbName)
+
 	exp := `(\d)*`
 	r := regexp.MustCompile(exp)
 	if found := r.FindAllString(osdbName, -1); found != nil {
@@ -109,43 +111,6 @@ func calcOsdbID(vbios string, osdbSlice []string) string {
 	}
 
 	return osdbID
-}
-
-//PostAsicConf will collect & write ASIC config into stack_conf.JSON
-func PostAsicConf(ww string) {
-
-	//input WW48,...
-	stackConf.Version = ww
-
-	vbiosSlice := GetVBIOS()
-	osdbSlice := GetOSDB()
-
-	asicConf := make([]AsicConf, len(vbiosSlice))
-
-	i := 0
-	for _, raw := range vbiosSlice {
-		if raw != "" {
-			asicConf[i].ProgramName = "Navi 21"
-			asicConf[i].ProgramID = "1289"
-			asicConf[i].DistroName = "ubuntu-20.04"
-			asicConf[i].DistroShortName = "u2004_64"
-			asicConf[i].StackName = calcSmtStackName(raw)
-			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
-			asicConf[i].VbiosFileName = raw
-			asicConf[i].OsdbVersion = calcOsdbVersion(raw, osdbSlice) //"20.30-1085420-ubuntu-20.04"
-			asicConf[i].OsdbID = calcOsdbID(raw, osdbSlice)           //"1085420"
-			asicConf[i].AsicName = calcAsicName(raw)                  //"D18x"
-			asicConf[i].TargetRelease = calcTargetRelease(raw)        //"19.40"
-			i++
-		}
-	}
-
-	fmt.Println("ASIC conf ==> ", asicConf)
-
-	stackConf.TestReport = GetTestReport()
-	stackConf.LnxStack = asicConf
-
-	writeJSONFile(stackConf)
 }
 
 //GetProgramID to provide program ID of SMT stack per programName
@@ -163,4 +128,44 @@ func GetProgramID(programName string) string {
 
 	//return program ID
 	return id
+}
+
+//PostAsicConf will collect & write ASIC config into stack_conf.JSON
+func PostAsicConf(ww string, programName string) {
+
+	//input WW48,...
+	stackConf.Version = ww
+	stackConf.StackPath = stackConf.StackPath + "/" + programName + "_Stack/"
+
+	vbiosSlice := GetVBIOS()
+	osdbSlice := GetOSDB()
+
+	asicConf := make([]AsicConf, len(vbiosSlice))
+
+	i := 0
+	for _, raw := range vbiosSlice {
+		if raw != "" {
+			asicConf[i].ProgramName = programName
+			asicConf[i].OsName = osName 					//Ubuntu 20.04.1
+			asicConf[i].DistroName = distroName				//ubuntu20.04
+			asicConf[i].DistroShortName = distroShortName	//u2004_64
+			asicConf[i].StackName = calcSmtStackName(raw)
+			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
+			asicConf[i].VbiosFileName = raw
+			asicConf[i].OsdbVersion = calcOsdbVersion(raw, osdbSlice) //"20.30-1085420-ubuntu-20.04"
+			asicConf[i].OsdbID = calcOsdbID(raw, osdbSlice)           //"1085420"
+			asicConf[i].AsicName = calcAsicName(raw)                  //"D18x"
+			asicConf[i].TargetRelease = calcTargetRelease(raw)        //"19.40"
+			i++
+		}
+	}
+
+	fmt.Println("ASIC conf ==> ", asicConf)
+
+	stackConf.TestReport = GetTestReport()
+	stackConf.LnxStack = asicConf
+	stackConf.ProgramName = programName
+	stackConf.ProgramID = GetProgramID(programName)
+
+	writeJSONFile(stackConf)
 }

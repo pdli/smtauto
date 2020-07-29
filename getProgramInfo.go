@@ -8,8 +8,9 @@ import (
 	//"encoding/json"
 )
 
-func readNavi10StackDir() []string {
-	log.Println(stackConf.Version)
+func readLinuxStackDir() []string {
+	log.Println("stack version and path", stackConf.Version, stackConf.StackPath) 
+
 	filesName, err := ioutil.ReadDir(stackConf.StackPath + "/" + stackConf.Version)
 	if err != nil {
 		log.Fatal(err)
@@ -27,7 +28,7 @@ func readNavi10StackDir() []string {
 //GetVBIOS list VBIOS info from specific folder - /opt/shares/Navi10_Stack/WWxx
 func GetVBIOS() []string {
 
-	filesName := readNavi10StackDir()
+	filesName := readLinuxStackDir()
 	vbiosSlice := make([]string, len(filesName))
 
 	fmt.Println("Get VBIOS info -> ")
@@ -54,7 +55,7 @@ func GetVBIOS() []string {
 //GetOSDB list OSDB info from specific folder - /opt/shares/Navi10_Stack/WWxx
 func GetOSDB() []string {
 
-	filesName := readNavi10StackDir()
+	filesName := readLinuxStackDir()
 	osdbSlice := make([]string, len(filesName))
 
 	fmt.Println("Get OSDB info ->")
@@ -78,7 +79,7 @@ func GetOSDB() []string {
 //GetTestReport list Test Report info from specific folder - /opt/shares/Navi10_Stack/WWxx
 func GetTestReport() string {
 
-	filesName := readNavi10StackDir()
+	filesName := readLinuxStackDir()
 	testReport := ""
 
 	fmt.Println("Get Test Report info ->")
