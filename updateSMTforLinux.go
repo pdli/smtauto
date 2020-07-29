@@ -417,7 +417,7 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 
 	//check results
 	log.Println("To check result of test report")
-	if err = wd.WaitWithTimeout(testReportUploaded, 20*time.Second); err != nil {
+	if err = wd.WaitWithTimeout(testReportUploaded, 60*time.Second); err != nil {
 		log.Fatal("Test report upload failed...")
 	} else {
 		log.Println("Test report upload successful")
