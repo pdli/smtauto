@@ -98,7 +98,7 @@ func uploadVbiosBinary(wd webdriver.WebDriver, biosVersion string) error {
 	return nil
 }
 
-func gotoSpecNavi10Stack(wd webdriver.WebDriver, stackName string) bool {
+func gotoSpecSMTStack(wd webdriver.WebDriver, stackName string) bool {
 
 	var loaded = true //false if not loaded
 
@@ -602,7 +602,7 @@ func UpdateSMTforLinux(wd webdriver.WebDriver) {
 	for _, entry := range stackConf.LnxStack {
 
 		createStacks(wd, entry)
-		if found := gotoSpecNavi10Stack(wd, entry.StackName); found == true { //upload binaries if founded
+		if found := gotoSpecSMTStack(wd, entry.StackName); found == true { //upload binaries if founded
 			updateStackComponents(wd)
 			uploadBinaries(wd, entry)
 			uploadTestReport(wd)
