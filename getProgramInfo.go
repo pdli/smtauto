@@ -84,7 +84,7 @@ func GetTestReport() string {
 
 	fmt.Println("Get Test Report info ->")
 
-	exp := `Navi(.)*.msg`
+	exp := `\w(.)*.msg`
 	r := regexp.MustCompile(exp)
 
 	for _, f := range filesName {

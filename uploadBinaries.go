@@ -137,7 +137,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	httpLinkInput.Clear()
-
+	
 	//leverage Jarvis cache
 	ubuntuLink := "http://lnx-jfrog/artifactory/osibuild-packages-cache/" +
 		asicConf.OsdbID +
@@ -146,7 +146,27 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		"-" + asicConf.DistroName + ".tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
 	log.Println("----> DOWNLOAD LINK - ", ubuntuLink)
+	
+	/*
+	//File Upload
+	fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileUploadTab.Click()
 
+	fileInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='mat-tab-content-1-4']/div/div/div/input")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fileInput.Clear()
+	fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" + 
+			"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
+	log.Println("Path is " + stackConf.StackPath + "/" + stackConf.Version + "/" + 
+	"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz" )
+	*/
+
+	//update OSDB version
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
 	if err != nil {
 		log.Fatal(err)
@@ -219,7 +239,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	fileInput.Clear()
-	fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" + asicConf.VbiosFileName)
+	fileInput.SendKeys(stackConf.StackPath + stackConf.Version + "/" + asicConf.VbiosFileName)
 
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
 	if err != nil {
