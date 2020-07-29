@@ -88,7 +88,7 @@ var (
 		"D511":	"D51101 XT",
 		"D512": "D51201 XTX",
 	}
-
+	//Not need to maintain - 7/29/2020
 	biosFileMap = map[string][]string{
 		"navi10": []string{
 			"D1820101",
