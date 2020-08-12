@@ -595,7 +595,7 @@ func updateStackComponents(wd webdriver.WebDriver) {
 }
 
 //UpdateSMTforLinux to update SMT
-func UpdateSMTforLinux(wd webdriver.WebDriver) {
+func UpdateSMTforLinux(wd webdriver.WebDriver, disableReport bool) {
 
 	log.Println("Go to stacks")
 
@@ -603,9 +603,15 @@ func UpdateSMTforLinux(wd webdriver.WebDriver) {
 
 		createStacks(wd, entry)
 		if found := gotoSpecSMTStack(wd, entry.StackName); found == true { //upload binaries if founded
-			updateStackComponents(wd)
+			if entry.ProgramName == "Navi21" {
+				updateStackComponents(wd)
+			}
+
 			uploadBinaries(wd, entry)
-			uploadTestReport(wd)
+
+			if disableReport == false {
+				uploadTestReport(wd)
+			}
 		}
 	}
 }
