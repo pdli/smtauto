@@ -9,7 +9,7 @@ import (
 )
 
 func readLinuxStackDir() []string {
-	log.Println("stack version and path", stackConf.Version, stackConf.StackPath) 
+	log.Println("stack version and path", stackConf.Version, stackConf.StackPath)
 
 	filesName, err := ioutil.ReadDir(stackConf.StackPath + "/" + stackConf.Version)
 	if err != nil {
@@ -60,7 +60,7 @@ func GetOSDB() []string {
 
 	fmt.Println("Get OSDB info ->")
 
-	exp := `^amdgpu-pro-20.(\d)0-(.)*-ubuntu-20.04.tar.xz`
+	exp := `^amdgpu-pro-2(\d).(\d)*-(.)*-ubuntu-20.04.tar.xz`
 	r := regexp.MustCompile(exp)
 
 	count := 0

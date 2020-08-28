@@ -69,15 +69,17 @@ var (
 	programIDMap = map[string]string{
 		"Navi21": "1289",
 		"Navi22": "1297",
+		"Navi10": "1258",
 	}
 
 	//get target release per each ASIC - gaming /wks
 	targetReleaseMap = map[string]string{
-		"D412": "20.40",
-		"D414": "20.40",
-		"D417": "20.40",
-		"D512": "20.40",
-		"D511": "20.40",
+		"D412": "20.45",
+		"D414": "20.45",
+		"D417": "20.45",
+		"D512": "20.45",
+		"D511": "20.45",
+		"D199": "20.30",
 	}
 
 	//get asic Name per each ASIC
@@ -87,6 +89,7 @@ var (
 		"D417": "D41711 GL XL",
 		"D511": "D51101 XT",
 		"D512": "D51201 XTX",
+		"D199": "D19901 XT",
 	}
 	//Not need to maintain - 7/29/2020
 	biosFileMap = map[string][]string{
