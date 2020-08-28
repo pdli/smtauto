@@ -61,8 +61,8 @@ type GpuDriverFirmwareConf struct {
 var (
 
 	//used to upload binaries
-	osName = "Ubuntu 20.04.1"
-	distroName = "ubuntu-20.04"
+	osName          = "Ubuntu 20.04.1"
+	distroName      = "ubuntu-20.04"
 	distroShortName = "u2004_64"
 
 	//programIDMap provides the mapping btw Program Name and Program ID of SMT stack
@@ -76,8 +76,8 @@ var (
 		"D412": "20.40",
 		"D414": "20.40",
 		"D417": "20.40",
-		"D512":	"20.40",
-		"D511":	"20.40",
+		"D512": "20.40",
+		"D511": "20.40",
 	}
 
 	//get asic Name per each ASIC
@@ -85,7 +85,7 @@ var (
 		"D412": "D41201 XTX",
 		"D414": "D41401 XL",
 		"D417": "D41711 GL XL",
-		"D511":	"D51101 XT",
+		"D511": "D51101 XT",
 		"D512": "D51201 XTX",
 	}
 	//Not need to maintain - 7/29/2020

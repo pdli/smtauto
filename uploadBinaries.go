@@ -137,17 +137,16 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	httpLinkInput.Clear()
-	
+
 	//leverage Jarvis cache
-	ubuntuLink := "http://lnx-jfrog/artifactory/osibuild-packages-cache/" +
+	/*ubuntuLink := "http:///lnx-jfrog/artifactory/osibuild-packages-cache/" +
 		asicConf.OsdbID +
 		"/hybrid_rel." + asicConf.DistroShortName + "/amdgpu-pro-" +
 		asicConf.OsdbVersion +
 		"-" + asicConf.DistroName + ".tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
-	log.Println("----> DOWNLOAD LINK - ", ubuntuLink)
-	
-	/*
+	log.Println("----> DOWNLOAD LINK - ", ubuntuLink)*/
+
 	//File Upload
 	fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
 	if err != nil {
@@ -160,11 +159,10 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		log.Fatal(err)
 	}
 	fileInput.Clear()
-	fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" + 
-			"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
-	log.Println("Path is " + stackConf.StackPath + "/" + stackConf.Version + "/" + 
-	"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz" )
-	*/
+	fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" +
+		"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
+	log.Println("Path is " + stackConf.StackPath + "/" + stackConf.Version + "/" +
+		"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
 
 	//update OSDB version
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
@@ -181,7 +179,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 	osInput.Clear()
 	osInput.SendKeys(asicConf.OsName)
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), '"+ asicConf.OsName+"')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), '"+asicConf.OsName+"')]")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -255,7 +253,7 @@ func uploadBIOS(wd webdriver.WebDriver, asicConf AsicConf) {
 	osInput.Clear()
 	osInput.SendKeys(asicConf.OsName)
 
-	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), '"+asicConf.OsName +"')]")
+	osListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-1']//span[contains(text(), '"+asicConf.OsName+"')]")
 	if err != nil {
 		log.Fatal(err)
 	}
