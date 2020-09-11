@@ -86,7 +86,7 @@ var (
 	asicNameMap = map[string]string{
 		"D412": "D41201 XTX",
 		"D414": "D41401 XL",
-		"D417": "D41711 GL XL",
+		"D417": "D41702 Navi21 GL XL",
 		"D511": "D51101 XT",
 		"D512": "D51201 XTX",
 		"D199": "D19901 XT",
@@ -109,7 +109,7 @@ var (
 		"navi21": []string{
 			"D4120XTX",
 			"D4140XTX",
-			"D41711XT",
+			"D417GLXL",
 		},
 	}
 )

@@ -139,15 +139,15 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 	httpLinkInput.Clear()
 
 	//leverage Jarvis cache
-	/*ubuntuLink := "http:///lnx-jfrog/artifactory/osibuild-packages-cache/" +
+	ubuntuLink := "http://lnx-jfrog/artifactory/osibuild-packages-cache/" +
 		asicConf.OsdbID +
 		"/hybrid_rel." + asicConf.DistroShortName + "/amdgpu-pro-" +
 		asicConf.OsdbVersion +
 		"-" + asicConf.DistroName + ".tar.xz"
 	httpLinkInput.SendKeys(ubuntuLink)
-	log.Println("----> DOWNLOAD LINK - ", ubuntuLink)*/
+	log.Println("----> DOWNLOAD LINK - ", ubuntuLink)
 
-	//File Upload
+	/*//File Upload
 	fileUploadTab, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'File Upload')]")
 	if err != nil {
 		log.Fatal(err)
@@ -163,6 +163,7 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 		"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
 	log.Println("Path is " + stackConf.StackPath + "/" + stackConf.Version + "/" +
 		"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
+	*/
 
 	//update OSDB version
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
@@ -281,7 +282,7 @@ func UploadBinaries(wd webdriver.WebDriver, disableVBIOS bool) {
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])
-		time.Sleep(20 * time.Second)
+		time.Sleep(30 * time.Second)
 	}
 
 	unUploadSlice := getNewBinToUpload(wd)

@@ -33,7 +33,7 @@ func GetVBIOS() []string {
 
 	fmt.Println("Get VBIOS info -> ")
 
-	exp := `D(\d){4}[0-9a-zA-Z]{3}[_|.]`
+	exp := `D(\d){3}[0-9a-zA-Z]{4}[_|.]`
 	r, err := regexp.Compile(exp)
 	if err != nil {
 		log.Fatal(err)
