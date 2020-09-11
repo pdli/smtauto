@@ -21,10 +21,22 @@ func calcSmtStackName(vbios string) string {
 
 	var stackName = ""
 
-	exp := `D(\d){4}`
+	exp := `(GLXL)` //D417GLXL
 	r := regexp.MustCompile(exp)
+	vbios = r.ReplaceAllString(vbios, "02")
+
+	exp = `D(\d){5}`
+	r = regexp.MustCompile(exp)
+	if found := r.FindAllString(vbios, 1); found != nil {
+		stackName = found[0] + stackConf.Version
+		return stackName
+	}
+
+	exp = `D(\d){4}`
+	r = regexp.MustCompile(exp)
 	if found := r.FindAllString(vbios, 1); found != nil {
 		stackName = found[0] + "1" + stackConf.Version
+		return stackName
 	}
 
 	return stackName
@@ -51,7 +63,7 @@ func calcAsicName(vbios string) string {
 
 	var asicName = ""
 
-	exp := `D(\d){3}`
+	exp := `D(\w){5}`
 	r := regexp.MustCompile(exp)
 
 	if found := r.FindAllString(vbios, 1); found != nil {
@@ -146,9 +158,9 @@ func PostAsicConf(ww string, programName string) {
 	for _, raw := range vbiosSlice {
 		if raw != "" {
 			asicConf[i].ProgramName = programName
-			asicConf[i].OsName = osName 					//Ubuntu 20.04.1
-			asicConf[i].DistroName = distroName				//ubuntu20.04
-			asicConf[i].DistroShortName = distroShortName	//u2004_64
+			asicConf[i].OsName = osName                   //Ubuntu 20.04.1
+			asicConf[i].DistroName = distroName           //ubuntu20.04
+			asicConf[i].DistroShortName = distroShortName //u2004_64
 			asicConf[i].StackName = calcSmtStackName(raw)
 			asicConf[i].VbiosVersion = calcVbiosVersion(raw)
 			asicConf[i].VbiosFileName = raw

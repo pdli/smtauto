@@ -84,12 +84,12 @@ var (
 
 	//get asic Name per each ASIC
 	asicNameMap = map[string]string{
-		"D412": "D41201 XTX",
-		"D414": "D41401 XL",
-		"D417": "D41702 Navi21 GL XL",
-		"D511": "D51101 XT",
-		"D512": "D51201 XTX",
-		"D199": "D19901 XT",
+		"D4120X": "D41201 XTX",
+		"D41401": "D41401 XL",
+		"D417GL": "D41702 Navi21 GL XL",
+		"D41205": "D41205 Navi21 XT",
+		"D51101": "D51101 XT",
+		"D51201": "D51201 XTX",
 	}
 	//Not need to maintain - 7/29/2020
 	biosFileMap = map[string][]string{
@@ -110,6 +110,7 @@ var (
 			"D4120XTX",
 			"D4140XTX",
 			"D417GLXL",
+			"D41205XT",
 		},
 	}
 )
