@@ -126,12 +126,12 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 	swNameInput.Clear()
 	swNameInput.SendKeys("AMD GPU DRIVER")
 
-	swListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-0']//span[contains(text(), 'AMD GPU DRIVER')]")
+/*	swListBox, err := wd.FindElement(webdriver.ByXPATH, "//div[@id='mat-autocomplete-0']//span[contains(text(), 'AMD GPU DRIVER')]")
 	if err != nil {
 		log.Fatal(err)
 	}
 	swListBox.Click()
-
+*/
 	httpLinkInput, err := wd.FindElement(webdriver.ByID, "link")
 	if err != nil {
 		log.Fatal(err)
