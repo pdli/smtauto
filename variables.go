@@ -88,8 +88,8 @@ var (
 		"D41401": "D41401 XL",
 		"D417GL": "D41702 Navi21 GL XL",
 		"D41205": "D41205 Navi21 XT",
-		"D51101": "D51101 XT",
-		"D51201": "D51201 XTX",
+		"D51101": "D51101 Navi22 XT",
+		"D51201": "D51201 Navi22 XT",
 		"D51601": "D51601 Navi22 XM",
 	}
 	//Not need to maintain - 7/29/2020

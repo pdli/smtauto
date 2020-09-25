@@ -84,6 +84,7 @@ func calcTargetRelease(vbios string) string {
 		targetRelease = targetReleaseMap[found[0]]
 	}
 
+	fmt.Println("Calculate Target Release version - ", targetRelease)
 	return targetRelease
 }
 
@@ -91,6 +92,8 @@ func calcTargetRelease(vbios string) string {
 func calcOsdbVersion(vbios string, osdbSlice []string) string {
 
 	var osdbName = ""
+
+	fmt.Println("osdbSlice is - ", osdbSlice)
 
 	if targetRelease := calcTargetRelease(vbios); targetRelease != "" {
 		for _, osdb := range osdbSlice {
