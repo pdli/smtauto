@@ -1,7 +1,9 @@
 package smtauto
 
 import (
+	"encoding/json"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/radutopala/webdriver"
@@ -425,14 +427,30 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 	return nil
 }
 
+//structMapConverter - convert struct to map
+/*func structMapConverter string ( y string) {
+
+	return "Hello"
+	log.Println("To be DONE")
+}*/
+
 //updateStackComponents - update IFWI / Linux-GPU-Driver
-func updateStackComponents(wd webdriver.WebDriver) {
+func updateStackComponents(wd webdriver.WebDriver, programName string) {
 
 	// get Firmwre info of IFWI
 	ifwiConf := GetIfwiComponentsForStack()
 
 	// get Firmware info of Linux GPU Driver
 	gpuDriverConf := GetGpuDriverComponentsForStack()
+
+	// change struct to map
+	ifwiConfMap := make(map[string]string)
+	j, _ := json.Marshal(ifwiConf)
+	json.Unmarshal(j, &ifwiConfMap)
+
+	gpuDriverConfMap := make(map[string]string)
+	j, _ = json.Marshal(gpuDriverConf)
+	json.Unmarshal(j, &gpuDriverConfMap)
 
 	//goto EDIT web page
 	editBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'EDIT')]")
@@ -449,142 +467,31 @@ func updateStackComponents(wd webdriver.WebDriver) {
 	firmwaresTab.Click()
 
 	// 1- Update Firmware info of IFWI
-	//input MC
-	mcInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[1]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
+	indexIfwi := 0
+	for _, fwName := range ifwiComptOrderMap[programName] {
+		indexIfwi = indexIfwi + 1
+		ifwiFwInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr["+strconv.Itoa(indexIfwi)+"]/td[2]/input[2]")
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(" ifwi ", ifwiConfMap[fwName])
+		log.Println(" ifwi ", fwName)
+		ifwiFwInput.Clear()
+		ifwiFwInput.SendKeys(ifwiConfMap[fwName])
 	}
-	mcInput.Clear()
-	mcInput.SendKeys(ifwiConf.MC)
-
-	//input DMUCB
-	dmucbInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[2]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	dmucbInput.Clear()
-	dmucbInput.SendKeys(ifwiConf.DMUCB)
-
-	//input SEC Policy L0
-	policyL0Input, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[3]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	policyL0Input.Clear()
-	policyL0Input.SendKeys(ifwiConf.SecPolicyL0)
-
-	//input SEC Policy L1
-	policyL1Input, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[4]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	policyL1Input.Clear()
-	policyL1Input.SendKeys(ifwiConf.SecPolicyL1)
-
-	//input SMU
-	smuInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[5]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	smuInput.Clear()
-	smuInput.SendKeys(ifwiConf.SMU)
-
-	//input PSP-BL
-	pspBLInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[6]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	pspBLInput.Clear()
-	pspBLInput.SendKeys(ifwiConf.PspBL)
-
-	//input DXIO
-	dxioInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[7]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	dxioInput.Clear()
-	dxioInput.SendKeys(ifwiConf.DXIO)
-
-	//input VBL
-	vblInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr[8]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	vblInput.Clear()
-	vblInput.SendKeys(ifwiConf.VBL)
 
 	// 2- Update firmware version of Linux GPU driver
-	//input SDMA
-	sdmalInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[1]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
+	indexGpu := 0
+	for _, gpuName := range gpuCompOrderMap[programName] {
+		indexGpu = indexGpu + 1
+		gpuFwInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr["+strconv.Itoa(indexGpu)+"]/td[2]/input[2]")
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(" gpu ", gpuDriverConfMap[gpuName])
+		gpuFwInput.Clear()
+		gpuFwInput.SendKeys(gpuDriverConfMap[gpuName])
 	}
-	sdmalInput.Clear()
-	sdmalInput.SendKeys(gpuDriverConf.SDMA)
-
-	//input ME
-	meInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[2]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	meInput.Clear()
-	meInput.SendKeys(gpuDriverConf.ME)
-
-	//input MEC
-	mecInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[3]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	mecInput.Clear()
-	mecInput.SendKeys(gpuDriverConf.MEC)
-
-	//input VCN
-	vncInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[4]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	vncInput.Clear()
-	vncInput.SendKeys(gpuDriverConf.VCN)
-
-	//input PFP
-	pfpInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[5]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	pfpInput.Clear()
-	pfpInput.SendKeys(gpuDriverConf.PFP)
-
-	//input RLC
-	rlcInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[6]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	rlcInput.Clear()
-	rlcInput.SendKeys(gpuDriverConf.RLC)
-
-	//input SMC
-	smcInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[7]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	smcInput.Clear()
-	smcInput.SendKeys(gpuDriverConf.SMC)
-
-	//input CE
-	ceInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[8]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	ceInput.Clear()
-	ceInput.SendKeys(gpuDriverConf.CE)
-
-	//input SOS
-	sosInput, err := wd.FindElement(webdriver.ByXPATH, "//div[4]//app-firmware-select/div/div/table/tbody/tr[9]/td[2]/input[2]")
-	if err != nil {
-		log.Fatal(err)
-	}
-	sosInput.Clear()
-	sosInput.SendKeys(gpuDriverConf.SOS)
 
 	//click Save Stack
 	saveStackBtn, err := wd.FindElement(webdriver.ByXPATH, "//*[contains(text(), 'SAVE STACK')]")
@@ -603,9 +510,7 @@ func UpdateSMTforLinux(wd webdriver.WebDriver, disableReport bool) {
 
 		createStacks(wd, entry)
 		if found := gotoSpecSMTStack(wd, entry.StackName); found == true { //upload binaries if founded
-			if entry.ProgramName == "Navi21" {
-				updateStackComponents(wd)
-			}
+			updateStackComponents(wd, entry.ProgramName)
 
 			uploadBinaries(wd, entry)
 

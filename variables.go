@@ -96,15 +96,15 @@ var (
 
 	//controlled by the oder of components per each program
 	ifwiComptOrderMap = map[string][]string{
-		"Navi21": []string{
+		"Navi22": []string{
 			"PspBL",
 			"VBL",
 			"UMC",
 			"DMUCB",
 		},
-		"Navi22": []string{
-			"MC",
-			"DMCUB",
+		"Navi21": []string{
+			"UMC",
+			"DMUCB",
 			"SecPolicyL0",
 			"SecPolicyL1",
 			"SMU",
@@ -136,7 +136,7 @@ var (
 			"ME",
 			"SDMA",
 			"MEC",
-		}
+		},
 	}
 
 	//Not need to maintain - 7/29/2020

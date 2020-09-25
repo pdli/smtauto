@@ -75,7 +75,7 @@ func GetIfwiComponentsForStack() IfwiFirmwareConf {
 	fwConfList := readFileLineByLine("FirmwareReleaseNote.txt")
 
 	fmt.Println("==== Get IFWI Firmware Config ====")
-	_, ifwiConf.MC = findIfwiComponentFromList(fwConfList, "UMC")
+	_, ifwiConf.UMC = findIfwiComponentFromList(fwConfList, "UMC")
 	_, ifwiConf.DMUCB = findIfwiComponentFromList(fwConfList, "DMCUB")
 	_, ifwiConf.SecPolicyL0 = findIfwiComponentFromList(fwConfList, "SEC POLICY L0/L1")
 	_, ifwiConf.SecPolicyL1 = findIfwiComponentFromList(fwConfList, "SEC POLICY L0/L1")
