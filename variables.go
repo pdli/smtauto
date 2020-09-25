@@ -35,6 +35,7 @@ type VbiosConf struct {
 
 //IfwiFirmwareConf defines the firmwares version in IFWI
 type IfwiFirmwareConf struct {
+	UMC         string
 	MC          string
 	DMUCB       string
 	SecPolicyL0 string
@@ -92,6 +93,52 @@ var (
 		"D51201": "D51201 Navi22 XT",
 		"D51601": "D51601 Navi22 XM",
 	}
+
+	//controlled by the oder of components per each program
+	ifwiComptOrderMap = map[string][]string{
+		"Navi21": []string{
+			"PspBL",
+			"VBL",
+			"UMC",
+			"DMUCB",
+		},
+		"Navi22": []string{
+			"MC",
+			"DMCUB",
+			"SecPolicyL0",
+			"SecPolicyL1",
+			"SMU",
+			"PspBL",
+			"DXIO",
+			"VBL",
+		},
+	}
+
+	gpuCompOrderMap = map[string][]string{
+		"Navi21": []string{
+			"SDMA",
+			"ME",
+			"MEC",
+			"VCN",
+			"PFP",
+			"RLC",
+			"SMC",
+			"CE",
+			"SOS",
+		},
+		"Navi22": []string{
+			"CE",
+			"SOS",
+			"SMC",
+			"RLC",
+			"PFP",
+			"VCN",
+			"ME",
+			"SDMA",
+			"MEC",
+		}
+	}
+
 	//Not need to maintain - 7/29/2020
 	biosFileMap = map[string][]string{
 		"navi10": []string{
