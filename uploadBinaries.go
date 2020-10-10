@@ -160,9 +160,9 @@ func uploadOSDB(wd webdriver.WebDriver, asicConf AsicConf) {
 	}
 	fileInput.Clear()
 	fileInput.SendKeys(stackConf.StackPath + "/" + stackConf.Version + "/" +
-		"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
+		asicConf.ProgramName + "_" + asicConf.OsdbVersion + "_release_notes.pdf")
 	log.Println("Path is " + stackConf.StackPath + "/" + stackConf.Version + "/" +
-		"amdgpu-pro-" + asicConf.OsdbVersion + "-" + asicConf.DistroName + ".tar.xz")
+		asicConf.ProgramName + "_" + asicConf.OsdbVersion + "_release_notes.pdf")
 
 	//update OSDB version
 	versionInput, err := wd.FindElement(webdriver.ByXPATH, "//*[@id='alias']")
@@ -281,7 +281,7 @@ func UploadBinaries(wd webdriver.WebDriver, disableVBIOS bool) {
 
 	for index := range stackConf.LnxStack {
 		uploadOSDB(wd, stackConf.LnxStack[index])
-		time.Sleep(180 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 
 	unUploadSlice := getNewBinToUpload(wd)
