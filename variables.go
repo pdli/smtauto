@@ -92,7 +92,7 @@ var (
 		"D51101": "D51101 Navi22 XT",
 		"D51201": "D51201 Navi22 XT",
 		"D51601": "D51601 Navi22 XM",
-		"D51610": "D51601 Navi22 XTM",
+		"D51220": "D51220 Navi22 XTL",
 	}
 
 	//controlled by the oder of components per each program
