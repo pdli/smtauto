@@ -98,6 +98,11 @@ func calcAsicName(vbios string) string {
 		asicName = asicNameMap[found[0]]
 	}
 
+	if asicName == "" {
+		fmt.Println("Error - Failed to get Asic Name from VBIOS: ", vbios)
+		os.Exit(1)
+	}
+
 	return asicName
 }
 
