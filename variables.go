@@ -85,8 +85,8 @@ var (
 
 	//get asic Name per each ASIC
 	asicNameMap = map[string]string{
-		"D4120X": "D41201 XTX",
-		"D41401": "D41401 XL",
+		"D41201": "D41201 XTX",
+		"D4140X": "D41404",
 		"D417GL": "D41702 Navi21 GL XL",
 		"D51202": "D51201 Navi22 XT",
 		"D51601": "D51601 Navi22 XM",

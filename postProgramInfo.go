@@ -46,6 +46,13 @@ func calcSmtStackName(vbios string) string {
 		return stackName
 	}
 
+	exp = `D4140X`
+	r = regexp.MustCompile(exp)
+	if found := r.FindAllString(vbios, 1); found != nil {
+		stackName = "D41404" + stackConf.Version
+		return stackName
+	}
+
 	exp = `D(\d){5}`
 	r = regexp.MustCompile(exp)
 	if found := r.FindAllString(vbios, 1); found != nil {
