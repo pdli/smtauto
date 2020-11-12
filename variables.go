@@ -88,11 +88,9 @@ var (
 		"D4120X": "D41201 XTX",
 		"D41401": "D41401 XL",
 		"D417GL": "D41702 Navi21 GL XL",
-		"D41205": "D41205 Navi21 XT",
-		"D51101": "D51101 Navi22 XT",
 		"D51201": "D51201 Navi22 XT",
 		"D51601": "D51601 Navi22 XM",
-		"D51220": "D51220 Navi22 XTL",
+		"D51610": "D51610 Navi22 XTM",
 	}
 
 	//controlled by the oder of components per each program
