@@ -467,7 +467,7 @@ func updateStackComponents(wd webdriver.WebDriver, programName string) {
 	firmwaresTab.Click()
 
 	// 1- Update Firmware info of IFWI
-	indexIfwi := 0
+	/*indexIfwi := 0
 	for _, fwName := range ifwiComptOrderMap[programName] {
 		indexIfwi = indexIfwi + 1
 		ifwiFwInput, err := wd.FindElement(webdriver.ByXPATH, "//app-firmware-select/div/div/table/tbody/tr["+strconv.Itoa(indexIfwi)+"]/td[2]/input[2]")
@@ -478,7 +478,7 @@ func updateStackComponents(wd webdriver.WebDriver, programName string) {
 		log.Println(" ifwi ", fwName)
 		ifwiFwInput.Clear()
 		ifwiFwInput.SendKeys(ifwiConfMap[fwName])
-	}
+	}*/
 
 	// 2- Update firmware version of Linux GPU driver
 	indexGpu := 0
