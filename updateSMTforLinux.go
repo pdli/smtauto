@@ -449,7 +449,7 @@ func updateStackComponents(wd webdriver.WebDriver, programName string) {
 	json.Unmarshal(j, &ifwiConfMap)*/
 
 	gpuDriverConfMap := make(map[string]string)
-	j, _ = json.Marshal(gpuDriverConf)
+	j, _ := json.Marshal(gpuDriverConf)
 	json.Unmarshal(j, &gpuDriverConfMap)
 
 	//goto EDIT web page
