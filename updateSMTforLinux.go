@@ -438,15 +438,15 @@ func uploadTestReport(wd webdriver.WebDriver) error {
 func updateStackComponents(wd webdriver.WebDriver, programName string) {
 
 	// get Firmwre info of IFWI
-	ifwiConf := GetIfwiComponentsForStack()
+	//ifwiConf := GetIfwiComponentsForStack()
 
 	// get Firmware info of Linux GPU Driver
 	gpuDriverConf := GetGpuDriverComponentsForStack()
 
 	// change struct to map
-	ifwiConfMap := make(map[string]string)
+	/*ifwiConfMap := make(map[string]string)
 	j, _ := json.Marshal(ifwiConf)
-	json.Unmarshal(j, &ifwiConfMap)
+	json.Unmarshal(j, &ifwiConfMap)*/
 
 	gpuDriverConfMap := make(map[string]string)
 	j, _ = json.Marshal(gpuDriverConf)
