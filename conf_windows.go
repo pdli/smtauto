@@ -6,7 +6,7 @@ import (
 
 var (
 	stackConf = StackConf{
-		StackPath: "//10.67.64.248/shares",
+		StackPath: "//10.67.233.85/shares",
 	}
 
 	chrCaps = chrome.Capabilities{
