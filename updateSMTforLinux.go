@@ -510,7 +510,7 @@ func UpdateSMTforLinux(wd webdriver.WebDriver, disableReport bool) {
 
 		createStacks(wd, entry)
 		if found := gotoSpecSMTStack(wd, entry.StackName); found == true { //upload binaries if founded
-			updateStackComponents(wd, entry.ProgramName)
+			//updateStackComponents(wd, entry.ProgramName)
 
 			uploadBinaries(wd, entry)
 
